@@ -45,11 +45,11 @@ class VendasController extends Controller
     public function vender(Request $request, $id)
     {
         $request->validate([
-            'cpf' => 'required|string|max:255',
-            'cliente' => 'required|string|max:255',
-            'dataNascimento' => 'required|string|max:255',
-            'email' => 'string|max:255',
-            'whatsapp' => 'required|string|max:20',
+            'cpf'               => 'required|string|max:255',
+            'cliente'           => 'required|string|max:255',
+            'dataNascimento'    => 'required|string|max:255',
+            'email'             => 'string|max:255',
+            'whatsapp'          => 'required|string|max:20',
         ]);
 
         $vendaData = $this->prepareVendaData($request, $id);
@@ -77,10 +77,7 @@ class VendasController extends Controller
         $vendaData['email'] = $request->email;
         $vendaData['whatsapp'] = preg_replace('/[^0-9]/', '', $request->whatsapp);
         $vendaData['id_produto'] = $request->produto;
-
-        if (!empty($valor)) {
-            $vendaData['valor'] = $valor;
-        }
+        $vendaData['valor'] = $request->valor;
 
         return $vendaData;
     }
