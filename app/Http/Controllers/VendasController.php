@@ -64,8 +64,8 @@ class VendasController extends Controller
         if (!$paymentLinkData) {
             return $this->handlePaymentGenerationError($request->franquia, $id);
         }
-
-        return redirect()->away($paymentLinkData['json']['paymentLink']);
+        var_dump($paymentLinkData);
+        //return redirect()->away($paymentLinkData['json']['invoiceUrl']);
     }
 
     private function prepareVendaData(Request $request, $id)
