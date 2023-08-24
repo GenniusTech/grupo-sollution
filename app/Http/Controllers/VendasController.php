@@ -59,7 +59,7 @@ class VendasController extends Controller
             return $this->handleVendaCreationError($request->franquia);
         }
 
-        $paymentLinkData = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
+        $paymentLinkData = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor);
 
         if (!$paymentLinkData) {
             return $this->handlePaymentGenerationError($request->franquia, $id);
@@ -92,7 +92,7 @@ class VendasController extends Controller
         return redirect()->route($franquia, ['id' => $id])->withErrors(['https://meucontatoai.com//campanhalex'])->withInput();
     }
 
-    public function geraPagamentoAssas($nome, $cpf, $produto)
+    public function geraPagamentoAssas($nome, $cpf, $produto, $valor)
     {
         try {
             $customerId = $this->criarClienteAssas($nome, $cpf);
@@ -101,7 +101,7 @@ class VendasController extends Controller
                 throw new \Exception('Falha ao criar cliente no Assas.');
             }
 
-            $paymentData = $this->criarPagamentoAssas($customerId, $produto);
+            $paymentData = $this->criarPagamentoAssas($customerId, $produto, $valor);
 
             if (!$paymentData) {
                 throw new \Exception('Falha ao gerar pagamento no Assas.');
@@ -145,7 +145,7 @@ class VendasController extends Controller
         }
     }
 
-    private function criarPagamentoAssas($customerId, $produto)
+    private function criarPagamentoAssas($customerId, $produto, $valor)
     {
         try {
             $client = new Client();
@@ -158,7 +158,7 @@ class VendasController extends Controller
                 'json' => [
                     'customer' => $customerId,
                     'billingType' => 'PIX',
-                    'value' => $produto,
+                    'value' => $valor,
                     'dueDate' => Carbon::now()->addDay()->format('Y-m-d'),
                     'description' => 'Grupo Sollution - Produtos',
                 ],
