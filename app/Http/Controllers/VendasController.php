@@ -45,10 +45,10 @@ class VendasController extends Controller
     public function vender(Request $request, $id)
     {
         $request->validate([
-            'cpf'               => 'required|string|max:255',
+            'cpf'               => 'required|string|max:15',
             'cliente'           => 'required|string|max:255',
-            'dataNascimento'    => 'required|string|max:255',
-            'email'             => 'string|max:255',
+            'dataNascimento'    => 'required|string|max:20',
+            'email'             => 'string|max:100',
             'whatsapp'          => 'required|string|max:20',
         ]);
 
@@ -71,7 +71,7 @@ class VendasController extends Controller
     private function prepareVendaData(Request $request, $id)
     {
         $vendaData = ['id_vendedor' => $id];
-        $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
+        $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpf);
         $vendaData['nome'] = $request->cliente;
         $vendaData['dataNascimento'] = Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d');
         $vendaData['email'] = $request->email;

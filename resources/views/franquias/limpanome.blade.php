@@ -42,7 +42,7 @@
                                                 </div>
 
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" id="cpfInput" oninput="mascaraCpf(this)" maxlength="14" value="{{ old('cpf') }}" class="form-control form-control-user" name="cpf" placeholder="CPF/CNPJ">
+                                                    <input type="text" id="cpfInput" class="form-control form-control-user" value="{{ old('cpf') }}" name="cpf" placeholder="CPF" oninput="mascaraCpf(this)" maxlength="14">
                                                 </div>
 
                                                 <input type="hidden" name="id_user" value="{{ $id }}">
