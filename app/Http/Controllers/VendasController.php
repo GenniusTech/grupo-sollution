@@ -28,7 +28,7 @@ class VendasController extends Controller
         }
 
         if ($status) {
-            $vendasQuery->where('status', $status);
+            $vendasQuery->where('status_pay', $status);
         }
 
         if ($dataInicio && $dataFim) {
