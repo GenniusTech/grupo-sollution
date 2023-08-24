@@ -42,6 +42,7 @@ class VendasController extends Controller
 
         return view('dashboard.vendas', [
             'vendas' => $vendas,
+            'produto' => $produto
         ]);
     }
 
