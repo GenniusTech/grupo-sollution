@@ -65,7 +65,7 @@ class VendasController extends Controller
             return $this->handlePaymentGenerationError($request->franquia, $id);
         }
 
-        $venda->id_pay = $paymentLinkData['id'];
+        $venda->id_pay = $paymentLinkData['paymentId'];
         $venda->status_pay = 'PENDING';
         $venda->save();
 
