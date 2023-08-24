@@ -44,32 +44,28 @@ class VendasController extends Controller
 
     public function vender(Request $request, $id)
     {
-        try {
-            $request->validate([
-                'cpf' => 'required|string|max:255',
-                'cliente' => 'required|string|max:255',
-                'dataNascimento' => 'required|string|max:255',
-                'email' => 'string|max:255',
-                'whatsapp' => 'required|string|max:20',
-            ]);
+        $request->validate([
+            'cpf' => 'required|string|max:255',
+            'cliente' => 'required|string|max:255',
+            'dataNascimento' => 'required|string|max:255',
+            'email' => 'string|max:255',
+            'whatsapp' => 'required|string|max:20',
+        ]);
 
-            $vendaData = $this->prepareVendaData($request, $id);
-            $venda = Vendas::create($vendaData);
+        $vendaData = $this->prepareVendaData($request, $id);
+        $venda = Vendas::create($vendaData);
 
-            if (!$venda) {
-                return $this->handleVendaCreationError($request->franquia);
-            }
-
-            $paymentLinkData = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
-
-            if (!$paymentLinkData) {
-                return $this->handlePaymentGenerationError($request->franquia, $id);
-            }
-
-            return redirect()->away($paymentLinkData['json']['paymentLink']);
-        } catch (\Exception $e) {
-            return redirect()->route($request->franquia)->withErrors(['Ocorreu um erro inesperado. Por favor, tente novamente.']);
+        if (!$venda) {
+            return $this->handleVendaCreationError($request->franquia);
         }
+
+        $paymentLinkData = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
+
+        if (!$paymentLinkData) {
+            return $this->handlePaymentGenerationError($request->franquia, $id);
+        }
+
+        return redirect()->away($paymentLinkData['json']['paymentLink']);
     }
 
     private function prepareVendaData(Request $request, $id)
@@ -170,7 +166,7 @@ class VendasController extends Controller
                     'description' => 'Grupo Sollution - Consultoria',
                     'split' => [
                         'walletId' => "48548710-9baa-4ec1-a11f-9010193527c6",
-                        'fixedValue'=> 300,
+                        'fixedValue' => 300,
                     ]
                 ],
             ];
