@@ -67,7 +67,6 @@
                                                     @endswitch
                                                 </td>
                                                 <td>
-                                                <td>
                                                     @switch($venda->status_pay)
                                                         @case('PAYMENT_CONFIRMED')
                                                             Aprovado
