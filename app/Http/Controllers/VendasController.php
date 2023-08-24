@@ -84,12 +84,12 @@ class VendasController extends Controller
 
     private function handleVendaCreationError($franquia)
     {
-        return redirect()->route($franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente Tente novamente mais tarde ou fale com nosso suporte <a href="https://meucontatoai.com//campanhalex">Suporte</a>']);
+        return redirect()->route($franquia)->withErrors(['https://meucontatoai.com//campanhalex"']);
     }
 
     private function handlePaymentGenerationError($franquia, $id)
     {
-        return redirect()->route($franquia, ['id' => $id])->withErrors(['Erro! Tente novamente mais tarde ou fale com nosso suporte <a href="https://meucontatoai.com//campanhalex">Suporte</a>'])->withInput();
+        return redirect()->route($franquia, ['id' => $id])->withErrors(['https://meucontatoai.com//campanhalex'])->withInput();
     }
 
     public function geraPagamentoAssas($nome, $cpf, $produto)
@@ -124,8 +124,8 @@ class VendasController extends Controller
                     'access_token' => env('API_TOKEN'),
                 ],
                 'json' => [
-                    'name' => $nome,
-                    'cpf' => $cpf,
+                    'name'      => $nome,
+                    'cpfCnpj'   => $cpf,
                 ],
             ];
 
@@ -160,11 +160,7 @@ class VendasController extends Controller
                     'billingType' => 'PIX',
                     'value' => $produto,
                     'dueDate' => Carbon::now()->addDay()->format('Y-m-d'),
-                    'description' => 'Grupo Sollution - Consultoria',
-                    'split' => [
-                        'walletId' => "48548710-9baa-4ec1-a11f-9010193527c6",
-                        'fixedValue' => 300,
-                    ]
+                    'description' => 'Grupo Sollution - Produtos',
                 ],
             ];
 

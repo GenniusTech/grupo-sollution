@@ -19,7 +19,7 @@
                                             <div class="alert alert-danger">
                                                 <ul>
                                                     @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
+                                                        <li><p>Erro! Tente novamente mais tarde ou fale com nosso <a href="{{ $error }}">suporte</a> </p></li>
                                                     @endforeach
                                                 </ul>
                                             </div>
