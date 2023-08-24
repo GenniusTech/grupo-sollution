@@ -19,11 +19,16 @@ class VendasController extends Controller
 
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
+        $status = $request->input('status');
 
         $vendasQuery = Vendas::where('id_vendedor', $user->id);
 
         if ($produto) {
             $vendasQuery->where('id_produto', $produto);
+        }
+
+        if ($status) {
+            $vendasQuery->where('status', $status);
         }
 
         if ($dataInicio && $dataFim) {
@@ -36,9 +41,7 @@ class VendasController extends Controller
         $vendas = $vendasQuery->latest()->limit(30)->get();
 
         return view('dashboard.vendas', [
-            'users' => $user,
             'vendas' => $vendas,
-            'produto' => $produto
         ]);
     }
 

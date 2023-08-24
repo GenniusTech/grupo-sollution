@@ -2,21 +2,19 @@
     @section('conteudo')
     <div class="container-fluid">
 
-        <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Minhas Vendas</h1>
         </div>
 
-        <!-- Minhas Vendas -->
         <div class="row">
             <div class="col-xl-12 col-md-12 mb-4">
                 <div class="card border-left-dark shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1"> 
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#exampleModal">Filtros</button>
-                                    
+
                                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
@@ -29,16 +27,25 @@
                                                         <input type="hidden" value={{  csrf_token() }} name="_token">
                                                         <input type="hidden" value="{{ $produto }}" name="id">
                                                         <div class="row">
-                                                            <dil class="col-6">
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <select class="form-control"  name="status">
+                                                                        <option value="ALL">Todos os Status</option>
+                                                                        <option value="PAYMENT_CONFIRMED">Aprovados</option>
+                                                                        <option value="PENDING_PAY">Pendentes de Pagamento</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
                                                                 <div class="form-group">
                                                                     <input type="date" class="form-control" name="data_inicio" placeholder="Data inicial">
                                                                 </div>
-                                                            </dil>
-                                                            <dil class="col-6">
+                                                            </div>
+                                                            <div class="col-6">
                                                                 <div class="form-group">
                                                                     <input type="date" class="form-control" name="data_fim" placeholder="Data Final">
                                                                 </div>
-                                                            </dil>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -50,7 +57,7 @@
                                         </div>
                                     </div>
 
-                                    <hr> 
+                                    <hr>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -74,16 +81,7 @@
                                                 <td>
                                                     @switch($venda->id_produto)
                                                         @case(1)
-                                                            One Beauty
-                                                            @break
-                                                        @case(2)
                                                             Limpa Nome
-                                                            @break
-                                                        @case(3)
-                                                            One Motos
-                                                            @break
-                                                        @case(4)
-                                                            One Serviços
                                                             @break
                                                         @default
                                                             Produto Desconhecido
@@ -115,7 +113,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Fim Vendas -->
         </div>
 
     </div>
