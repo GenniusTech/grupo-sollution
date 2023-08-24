@@ -30,6 +30,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/vendas/{id}', [VendasController::class, 'getVendas'])->name('vendas');
     Route::post('vendas', [VendasController::class, 'getVendas'])->name('vendas');
 
+    Route::get('/usuario/{tipo}', [UserController::class, 'usuario'])->name('usuario');
+    Route::post('usuario', [UserController::class, 'action_usuario'])->name('usuario');
+
     Route::get('/perfil',[UserController::class, 'perfil'])->name('perfil');
     Route::post('perfil', [UserController::class, 'action_perfil'])->name('perfil');
 

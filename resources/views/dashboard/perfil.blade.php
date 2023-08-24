@@ -1,4 +1,4 @@
-@extends('dashboard/layout')
+@extends('dashboard.layout')
 @section('conteudo')
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">

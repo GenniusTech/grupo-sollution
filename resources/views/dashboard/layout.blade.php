@@ -54,6 +54,26 @@
                 </div>
             </li>
 
+            <div class="sidebar-heading">
+                Gestão
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGestao"
+                    aria-expanded="true" aria-controls="collapseGestao">
+                    <i class="fa fa-check"></i>
+                    <span>Parcerias</span>
+                </a>
+                <div id="collapseGestao" class="collapse" aria-labelledby="headingGestao"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="/usuario/3">Administradores</a>
+                        <a class="collapse-item" href="/usuario/2">Afiliados</a>
+                        <a class="collapse-item" href="/usuario/1">Influences</a>
+                    </div>
+                </div>
+            </li>
+
             <hr class="sidebar-divider d-none d-md-block">
 
             <div class="text-center d-none d-md-inline">
