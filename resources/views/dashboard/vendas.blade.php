@@ -95,7 +95,7 @@
                                                         @case('PAYMENT_CONFIRMED')
                                                             Aprovado
                                                             @break
-                                                        @case('PENDING_PAY')
+                                                        @case('PENDING')
                                                             Aguardando Pagamento
                                                             @break
                                                         @default
