@@ -30,9 +30,9 @@
                                                             <div class="col-12">
                                                                 <div class="form-group">
                                                                     <select class="form-control"  name="status">
-                                                                        <option value="ALL">Todos os Status</option>
+                                                                        <option value="PAYMENT_CONFIRMED">Status</option>
                                                                         <option value="PAYMENT_CONFIRMED">Aprovados</option>
-                                                                        <option value="PENDING_PAY">Pendentes de Pagamento</option>
+                                                                        <option value="PENDING">Pendentes de Pagamento</option>
                                                                     </select>
                                                                 </div>
                                                             </div>

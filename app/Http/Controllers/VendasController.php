@@ -16,7 +16,6 @@ class VendasController extends Controller
     {
         $user = auth()->user();
         $produto = $id;
-
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
         $status = $request->input('status');
@@ -38,7 +37,7 @@ class VendasController extends Controller
             $vendasQuery->whereBetween('updated_at', [$dataInicio, $dataFim]);
         }
 
-        $vendas = $vendasQuery->latest()->limit(30)->get();
+        $vendas = $vendasQuery->latest()->get();
 
         return view('dashboard.vendas', [
             'vendas' => $vendas,
