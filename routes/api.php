@@ -19,7 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Webhook Clicksin
-Route::post('clicksing', [AsaasController::class, 'enviaLinkPagamento'])->name('clicksing');
 //Webhook Assas
 Route::post('assas', [AsaasController::class, 'receberPagamento'])->name('assas');

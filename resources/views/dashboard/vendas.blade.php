@@ -68,7 +68,6 @@
                                                 <th>ID</th>
                                                 <th>Cliente</th>
                                                 <th>Produto</th>
-                                                <th>Contrato</th>
                                                 <th>Status</th>
                                                 <th>Data venda</th>
                                             </tr>
@@ -86,9 +85,6 @@
                                                         @default
                                                             Produto Desconhecido
                                                     @endswitch
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-outline-success" href="{{ asset('contratos/' . $venda->cpf . '.pdf') }}" download>Contrato</a>
                                                 </td>
                                                 <td>
                                                     @switch($venda->status_pay)
