@@ -115,9 +115,10 @@ class VendasController extends Controller
 
             return $paymentData;
         } catch (\Exception $e) {
-            return false;
+            return $e->getMessage();
         }
     }
+
 
     private function criarClienteAssas($nome, $cpf)
     {
