@@ -87,6 +87,7 @@ class UserController extends Controller
         $user->password = bcrypt($validatedData['password']);
         $user->tipo = $validatedData['tipo'];
         $user->comissao = $validatedData['comissao'];
+        $user->saldo = 0;
         $user->save();
 
         return redirect()->back()->with('success', 'Usuário cadastrado com sucesso!');
