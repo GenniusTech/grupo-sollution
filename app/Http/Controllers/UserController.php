@@ -74,6 +74,7 @@ class UserController extends Controller
             'password' => 'required|min:6',
             'tipo' => 'required',
             'comissao' => 'required',
+            'chave_pix' => 'required',
         ], [
             'cpf.unique' => 'CPF já está em uso.',
             'email.unique' => 'Email já está em uso.',
@@ -89,6 +90,7 @@ class UserController extends Controller
         $user->password = bcrypt($validatedData['password']);
         $user->tipo = $validatedData['tipo'];
         $user->comissao = $validatedData['comissao'];
+        $user->chave_pix = $validatedData['chave_pix'];
         $user->saldo = 0;
         $user->id_patrocinador = $patrociador->id;
         $user->save();
