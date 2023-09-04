@@ -51,6 +51,10 @@ class UserController extends Controller
             $user->password = Hash::make($request->input('password'));
         }
 
+        if ($request->filled('chave_pix')) {
+            $user->chave_pix = $request->input('chave_pix');
+        }
+
         $user->save();
 
         return redirect()->back()->with('success', 'Perfil atualizado com sucesso.');

@@ -22,6 +22,10 @@
                                         <input type="text" class="form-control form-control-user" name="nome"
                                             value="{{ $dados->nome }}">
                                     </div>
+                                    <div class="form-group col-sm-12 col-lg-12">
+                                        <input type="text" class="form-control form-control-user" name="chave_pix"
+                                            value="{{ $dados->chave_pix }}">
+                                    </div>
                                     <div class="form-group col-sm-12 col-lg-6">
                                         <input type="text" class="form-control form-control-user" name="email"
                                             value="{{ $dados->email }}">
