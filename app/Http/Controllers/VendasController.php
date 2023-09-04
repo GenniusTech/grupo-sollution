@@ -78,11 +78,10 @@ class VendasController extends Controller
     private function prepareVendaData(Request $request, $id)
     {
         $vendaData = ['id_vendedor' => $id];
-        $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpf);
         $vendaData['nome'] = $request->cliente;
-        $vendaData['dataNascimento'] = Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d');
-        $vendaData['email'] = $request->email;
+        $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpf);
         $vendaData['whatsapp'] = preg_replace('/[^0-9]/', '', $request->whatsapp);
+        $vendaData['email'] = $request->email;
         $vendaData['id_produto'] = $request->produto;
         $vendaData['valor'] = $request->valor;
 

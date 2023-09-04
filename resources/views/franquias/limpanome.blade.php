@@ -62,6 +62,7 @@
                             <div class="formulario">
                                 <form action="{{ route('vender', ['id' => $id]) }}" method="POST">
                                     <h4>Cadastre-se</h4>
+                                    <input type="hidden" value={{ csrf_token() }} name="_token">
                                     <input type="hidden" name="id_vendedor" value="{{ $id }}">
                                     <input type="hidden" name="produto" value="1">
                                     <input type="hidden" name="franquia" value="limpanome">
