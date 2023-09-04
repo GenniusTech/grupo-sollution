@@ -68,7 +68,7 @@
                                     <input type="hidden" name="franquia" value="limpanome">
                                     <input type="hidden" name="valor" value="997">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Nome:" name="nome" id="nome" required>
+                                        <input type="text" class="form-control" placeholder="Nome:" name="cliente" required>
                                     </div>
                                     <div class="form-group">
                                         <input type="text" class="form-control" placeholder="CPF:" name="cpf" id="cpf" oninput="mascaraCpf(this)" required>
@@ -77,7 +77,7 @@
                                         <input type="text" class="form-control" placeholder="Data Nascimento" name="dataNascimento" oninput="mascaraData(this)" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="E-mail:" name="email" id="email" required>
+                                        <input type="text" class="form-control" placeholder="E-mail:" name="email" required>
                                     </div>
                                     <div class="form-group">
                                         <input type="text" class="form-control" placeholder="WhatsApp:" name="whatsapp" oninput="mascaraTelefone(this)" required>
