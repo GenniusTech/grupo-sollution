@@ -81,7 +81,7 @@ class UserController extends Controller
             'cpf.unique' => 'CPF já está em uso.',
             'email.unique' => 'Email já está em uso.',
             'password.min' => 'A senha deve ter pelo menos 6 caracteres.',
-            'comissao.max' => 'O valor inserido não pode ser maior do que o seu valor de Comissão: ' . number_format($patrociador->comissao, 2, ',', '.'),
+            'comissao.max' => 'O valor da Comissão não pode ser maior do que o seu valor de Comissão: ' . number_format($patrociador->comissao, 2, ',', '.'),
         ]);
 
         $user = new User();

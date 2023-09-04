@@ -86,7 +86,7 @@
                 <div id="collapseGestao" class="collapse" aria-labelledby="headingGestao"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/usuario/1">Administradores</a>
+                        @if (Auth::user()->tipo == 1) <a class="collapse-item" href="/usuario/1">Administradores</a> @endif
                         <a class="collapse-item" href="/usuario/2">Afiliados</a>
                         <a class="collapse-item" href="/usuario/3">Influences</a>
                     </div>
