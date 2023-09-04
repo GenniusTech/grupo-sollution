@@ -46,7 +46,7 @@
                                                                     <input type="password" class="form-control" name="password" placeholder="Senha">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-6">
+                                                            <div class="col-12">
                                                                 <div class="form-group">
                                                                     <select class="form-control"  name="tipo">
                                                                         <option value="1">Tipo</option>
@@ -59,6 +59,11 @@
                                                             <div class="col-6">
                                                                 <div class="form-group">
                                                                     <input type="number" class="form-control" name="comissao" placeholder="Comissão Máx: {{ Auth::user()->comissao }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" name="chave_pix" placeholder="Informe uma chave pix">
                                                                 </div>
                                                             </div>
                                                         </div>
