@@ -18,22 +18,17 @@
                             <div class="row">
                                 <div class="col-sm-12 col-lg-8 offset-lg-2 row">
 
-                                    <div class="form-group col-sm-12 col-lg-12">
-                                        <input type="text" class="form-control form-control-user" name="nome"
-                                            value="{{ $dados->nome }}">
-                                    </div>
-                                    <div class="form-group col-sm-12 col-lg-12">
-                                        <input type="text" class="form-control form-control-user" name="chave_pix"
-                                            value="{{ $dados->chave_pix }}">
+                                    <div class="form-group col-sm-12 col-lg-6">
+                                        <input type="text" class="form-control form-control-user" name="nome" value="{{ $dados->nome }}" placeholder="Nome">
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-6">
-                                        <input type="text" class="form-control form-control-user" name="email"
-                                            value="{{ $dados->email }}">
+                                        <input type="text" class="form-control form-control-user" name="chave_pix" value="{{ $dados->chave_pix }}" placeholder="Chave Pix">
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-6">
-                                        <input type="password" class="form-control form-control-user" name="password"
-                                            placeholder="*************">
-
+                                        <input type="text" class="form-control form-control-user" name="email" value="{{ $dados->email }}" placeholder="Email">
+                                    </div>
+                                    <div class="form-group col-sm-12 col-lg-6">
+                                        <input type="password" class="form-control form-control-user" name="password" placeholder="*************">
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
                                         <div class="form-group">
