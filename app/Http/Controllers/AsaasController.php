@@ -41,8 +41,8 @@ class AsaasController extends Controller
     public function trataProduto($produto, $vendedor) {
         switch ($produto) {
             case 1:
-                $vendedor = User::where('id', $vendedor);
-                $patrocinador = User::where('id', $vendedor->id_patrocinador);
+                $vendedor = User::where('id', $vendedor)->first();
+                $patrocinador = User::where('id', $vendedor->id_patrocinador)->first();
 
                 //Atribui Comissão Vendedor
                 $vendedor->saldo = $vendedor->saldo + $vendedor->comissao;
