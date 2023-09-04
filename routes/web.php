@@ -16,7 +16,7 @@ Route::post('/', [UserController::class, 'login_action'])->name('login_action');
 Route::get('/limpanome/{id}', [ProdutoController::class, 'limpaNome'])->name('limpanome');
 
 //Vendas
-Route::post('/venda/{id}', [VendasController::class, 'vender'])->name('vender');
+Route::post('/vender/{id}', [VendasController::class, 'vender'])->name('vender');
 
 
 //Autenticados
