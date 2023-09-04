@@ -80,6 +80,8 @@ class UserController extends Controller
             'password.min' => 'A senha deve ter pelo menos 6 caracteres.',
         ]);
 
+        $patrociador = Auth::user();
+
         $user = new User();
         $user->nome = $validatedData['nome'];
         $user->cpf = $validatedData['cpf'];
@@ -88,6 +90,7 @@ class UserController extends Controller
         $user->tipo = $validatedData['tipo'];
         $user->comissao = $validatedData['comissao'];
         $user->saldo = 0;
+        $user->id_patrocinador = $patrociador->id;
         $user->save();
 
         return redirect()->back()->with('success', 'Usuário cadastrado com sucesso!');
