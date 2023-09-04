@@ -67,21 +67,22 @@ class UserController extends Controller
 
     public function action_usuario(Request $request)
     {
+        $patrociador = Auth::user();
+
         $validatedData = $request->validate([
             'nome' => 'required|string|max:255',
             'cpf' => 'required|unique:users',
             'email' => 'required|unique:users',
             'password' => 'required|min:6',
             'tipo' => 'required',
-            'comissao' => 'required',
+            'comissao' => 'required|numeric|max:'.$patrociador->comissao,
             'chave_pix' => 'required',
         ], [
             'cpf.unique' => 'CPF já está em uso.',
             'email.unique' => 'Email já está em uso.',
             'password.min' => 'A senha deve ter pelo menos 6 caracteres.',
+            'comissao.max' => 'O valor inserido não pode ser maior do que o seu valor de Comissão: ' . number_format($patrociador->comissao, 2, ',', '.'),
         ]);
-
-        $patrociador = Auth::user();
 
         $user = new User();
         $user->nome = $validatedData['nome'];

@@ -73,7 +73,6 @@
                 </div>
             </li>
 
-            @if (Auth::user()->tipo == 1)
             <div class="sidebar-heading">
                 Gestão
             </div>
@@ -93,7 +92,6 @@
                     </div>
                 </div>
             </li>
-            @endif
 
             <hr class="sidebar-divider d-none d-md-block">
 
