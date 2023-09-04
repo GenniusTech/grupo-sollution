@@ -63,16 +63,16 @@ class VendasController extends Controller
         }
 
         $paymentLinkData = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor);
+        var_dump($paymentLinkData);
+        // if (!$paymentLinkData) {
+        //     return $this->handlePaymentGenerationError($request->franquia, $id);
+        // }
 
-        if (!$paymentLinkData) {
-            return $this->handlePaymentGenerationError($request->franquia, $id);
-        }
+        // $venda->id_pay = $paymentLinkData['paymentId'];
+        // $venda->status_pay = 'PENDING';
+        // $venda->save();
 
-        $venda->id_pay = $paymentLinkData['paymentId'];
-        $venda->status_pay = 'PENDING';
-        $venda->save();
-
-        return redirect()->away($paymentLinkData['paymentLink']);
+        // return redirect()->away($paymentLinkData['paymentLink']);
     }
 
     private function prepareVendaData(Request $request, $id)
