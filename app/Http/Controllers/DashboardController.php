@@ -13,11 +13,9 @@ class DashboardController extends Controller
 {
     public function dashboard (){
         $users = auth()->user();
-
-        $vendas = Vendas::where('id_vendedor', $users->id)->limit(15)->get();
+        $vendas = Vendas::where('id_vendedor', $users->id)->limit(30)->get();
 
         return view('dashboard.index', [
-            'users' => $users,
             'vendas' => $vendas
         ]);
     }

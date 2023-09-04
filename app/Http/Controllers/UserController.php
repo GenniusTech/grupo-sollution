@@ -74,7 +74,6 @@ class UserController extends Controller
             'password' => 'required|min:6',
             'tipo' => 'required',
             'comissao' => 'required',
-            'wallet_assas' => 'required|string',
         ], [
             'cpf.unique' => 'CPF já está em uso.',
             'email.unique' => 'Email já está em uso.',
@@ -88,7 +87,6 @@ class UserController extends Controller
         $user->password = bcrypt($validatedData['password']);
         $user->tipo = $validatedData['tipo'];
         $user->comissao = $validatedData['comissao'];
-        $user->wallet_assas = $validatedData['wallet_assas'];
         $user->save();
 
         return redirect()->back()->with('success', 'Usuário cadastrado com sucesso!');

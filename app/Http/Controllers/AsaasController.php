@@ -3,13 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\File;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-use Dompdf\Dompdf;
 
 use App\Models\Vendas;
 
@@ -30,7 +25,7 @@ class AsaasController extends Controller
                 $venda->status_pay = 'PAYMENT_CONFIRMED';
                 $venda->save();
 
-                if($this->trataProduto($venda->id_produto, $venda->id)){
+                if($this->trataProduto($venda->id_produto, $venda->id_vendedor)){
                     return response()->json(['status' => 'success', 'response' => 'Venda Confirmada!']);
                 } else {
                     return response()->json(['status' => 'error', 'response' => 'Venda Confirmada, mas sem tratamento!']);
@@ -43,9 +38,19 @@ class AsaasController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado']);
     }
 
-    public function trataProduto($produto, $venda) {
+    public function trataProduto($produto, $vendedor) {
         switch ($produto) {
             case 1:
+                $vendedor = User::where('id', $vendedor);
+                $patrocinador = User::where('id', $vendedor->id_patrocinador);
+
+                //Atribui Comissão Vendedor
+                $vendedor->saldo = $vendedor->saldo + $vendedor->comissao;
+                $vendedor->save();
+                //Atribui Comissão Patrocinador
+                $patrocinador->saldo = $patrocinador->saldo + ( $patrocinador->comissao - $vendedor->comissao);
+                $patrocinador->save();
+
                 return true;
                 break;
             default:

@@ -50,7 +50,7 @@
                                                                 <div class="form-group">
                                                                     <select class="form-control"  name="tipo">
                                                                         <option value="1">Tipo</option>
-                                                                        <option value="3">Administrador</option>
+                                                                        @if (Auth::user()->tipo == 1) <option value="3">Administrador</option> @endif
                                                                         <option value="1">Influencer</option>
                                                                         <option value="2">Afiliados</option>
                                                                     </select>
@@ -58,12 +58,7 @@
                                                             </div>
                                                             <div class="col-6">
                                                                 <div class="form-group">
-                                                                    <input type="number" class="form-control" name="comissao" placeholder="Comissão">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12">
-                                                                <div class="form-group">
-                                                                    <input type="text" class="form-control" name="wallet_assas" placeholder="Wallet">
+                                                                    <input type="number" class="form-control" name="comissao" placeholder="Comissão Máx: {{ Auth::user()->comissao }}">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -102,7 +97,7 @@
                                                 <th>ID</th>
                                                 <th>Nome</th>
                                                 <th class="text-center">Comissão</th>
-                                                <th>Wallet</th>
+                                                <th class="text-center">Saldo</th>
                                                 <th class="text-center">Data Cadastro</th>
                                             </tr>
                                         </thead>
@@ -112,7 +107,7 @@
                                                 <td>{{ $usuario->id }}</td>
                                                 <td>{{ $usuario->nome }}</td>
                                                 <td class="text-center">{{ number_format($usuario->comissao, 2, ',', '.') }}</td>
-                                                <td>{{ $usuario->wallet_assas }}</td>
+                                                <td class="text-center">{{ number_format($usuario->saldo, 2, ',', '.') }}</td>
                                                 <td class="text-center">{{ \Carbon\Carbon::parse($usuario->created_at)->format('d/m/Y') }}</td>
                                             </tr>
                                             @endforeach

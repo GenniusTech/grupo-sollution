@@ -14,9 +14,11 @@ return new class extends Migration
             $table->string('cpf')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('comissao');
-            $table->string('wallet_assas')->nullable();
             $table->integer('tipo');
+            $table->integer('comissao');
+            $table->integer('saldo');
+            $table->integer('id_patrocinador');
+            $table->string('chave_pix');
             $table->timestamps();
         });
     }

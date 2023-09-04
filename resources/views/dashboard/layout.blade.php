@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" type="image/png" href="{{ asset('admin/assets/logo.png') }}" />
 
-    <title>Grupo Sollution</title>
+    <title>Vendas - Grupo Sollution</title>
 
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
     <link href="{{ asset('admin/css/sb-admin-2.css') }}" rel="stylesheet">
+    <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -55,6 +55,26 @@
             </li>
 
             <div class="sidebar-heading">
+                Financeiro
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinanceiro"
+                    aria-expanded="true" aria-controls="collapseFinanceiro">
+                    <i class="fa fa-credit-card"></i>
+                    <span>Gestão Financeira</span>
+                </a>
+                <div id="collapseFinanceiro" class="collapse" aria-labelledby="headingFinanceiro"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route('saque') }}">Saques/Extrato</a>
+                        @if (Auth::user()->tipo == 1) <a class="collapse-item" href="{{ route('wallet') }}">Carteira</a> @endif
+                    </div>
+                </div>
+            </li>
+
+            @if (Auth::user()->tipo == 1)
+            <div class="sidebar-heading">
                 Gestão
             </div>
 
@@ -67,12 +87,13 @@
                 <div id="collapseGestao" class="collapse" aria-labelledby="headingGestao"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/usuario/3">Administradores</a>
+                        <a class="collapse-item" href="/usuario/1">Administradores</a>
                         <a class="collapse-item" href="/usuario/2">Afiliados</a>
-                        <a class="collapse-item" href="/usuario/1">Influences</a>
+                        <a class="collapse-item" href="/usuario/3">Influences</a>
                     </div>
                 </div>
             </li>
+            @endif
 
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -168,7 +189,6 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>

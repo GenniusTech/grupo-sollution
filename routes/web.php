@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendasController;
+use App\Http\Controllers\FinanceiroController;
 use Illuminate\Support\Facades\Route;
 
 //Login
@@ -14,12 +15,9 @@ Route::post('/', [UserController::class, 'login_action'])->name('login_action');
 //Produtos
 Route::get('/limpanome/{id}', [ProdutoController::class, 'limpaNome'])->name('limpanome');
 
-
+//Vendas
 Route::post('/venda/{id}', [VendasController::class, 'vender'])->name('vender');
-Route::view('/contrato', 'relatorio.contrato')->name('relatorio.contrato');
 
-//Extras
-Route::view('/obrigado', 'obrigado');
 
 //Autenticados
 Route::middleware(['auth'])->group(function () {
@@ -35,5 +33,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/perfil',[UserController::class, 'perfil'])->name('perfil');
     Route::post('perfil', [UserController::class, 'action_perfil'])->name('perfil');
+
+    Route::get('/saque', [FinanceiroController::class, 'index'])->name('saque');
+    Route::post('saque', [FinanceiroController::class, 'saque'])->name('saque');
+
+    Route::get('/wallet', [FinanceiroController::class, 'wallet'])->name('wallet');
+    Route::post('confirmaPagamento', [FinanceiroController::class, 'confirmaPagamento'])->name('confirmaPagamento');
 
 });
