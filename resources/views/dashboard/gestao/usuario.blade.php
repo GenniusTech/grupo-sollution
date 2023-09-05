@@ -51,7 +51,7 @@
                                                                     <select class="form-control"  name="tipo">
                                                                         <option value="1">Tipo</option>
                                                                         @if (Auth::user()->tipo == 1) <option value="3">Administrador</option> @endif
-                                                                        <option value="1">Influencer</option>
+                                                                        <option value="3">Influencer</option>
                                                                         <option value="2">Afiliados</option>
                                                                     </select>
                                                                 </div>

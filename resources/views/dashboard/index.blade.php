@@ -18,7 +18,11 @@
                                             <button class="btn btn-outline-green" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
                                     </div>
                                     <div class="col">
-                                        <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/limpanome/' . auth()->id()) }}" target="_blank">{{ url('/limpanome/' . auth()->id()) }}</a>
+                                        @if(Auth::user()->id != 7)
+                                            <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/limpanome/' . auth()->id()) }}" target="_blank">{{ url('/limpanome/' . auth()->id()) }}</a>
+                                        @else
+                                        <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/kannanda/' . auth()->id()) }}" target="_blank">{{ url('/kannanda/' . auth()->id()) }}</a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
