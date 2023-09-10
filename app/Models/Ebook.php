@@ -10,4 +10,14 @@ class Ebook extends Model
     use HasFactory;
 
     protected $table = 'ebook';
+
+    protected $fillable = [
+        'cpf',
+        'email',
+        'valor',
+        'produto',
+        'status',
+        'id_pay',
+        'id_vendedor',
+    ];
 }
