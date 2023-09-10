@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('email');
             $table->decimal('valor', 10, 2);
             $table->string('produto');
-            $table->integer('status');
+            $table->string('status');
             $table->string('id_pay');
             $table->integer('id_vendedor');
             $table->timestamps();
