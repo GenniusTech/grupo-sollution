@@ -78,15 +78,17 @@ class AsaasController extends Controller
     }
 
     public function geraPagamento(Request $request) {
-         $jsonData = $request->json()->all();
+        $jsonData = $request->json()->all();
 
-        $email     = $jsonData['email'];
-        $cpf   = $jsonData['cpf'];
-        $pagamento = $jsonData['pagamento'];
-        $produto   = $jsonData['produto'];
-        $vendedor   = $jsonData['vendedor'];
+        var_dump($jsonData);
 
-        return $email;
+        // $email     = $jsonData['email'];
+        // $cpf   = $jsonData['cpf'];
+        // $pagamento = $jsonData['pagamento'];
+        // $produto   = $jsonData['produto'];
+        // $vendedor   = $jsonData['vendedor'];
+
+        // return $email;
 
         // $client = new Client();
 
