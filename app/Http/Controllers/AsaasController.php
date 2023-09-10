@@ -86,8 +86,6 @@ class AsaasController extends Controller
         $produto   = $jsonData['produto'];
         $vendedor   = $jsonData['vendedor'];
 
-        return $email;
-
         $client = new Client();
 
         $options = [
