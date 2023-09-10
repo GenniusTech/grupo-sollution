@@ -78,70 +78,72 @@ class AsaasController extends Controller
     }
 
     public function geraPagamento(Request $request) {
-       $jsonData = $request->json()->all();
+         $jsonData = $request->json()->all();
 
-       $email     = $jsonData['email'];
-       $cpf   = $jsonData['cpf'];
-       $pagamento = $jsonData['pagamento'];
-       $produto   = $jsonData['produto'];
-       $vendedor   = $jsonData['vendedor'];
+        $email     = $jsonData['email'];
+        $cpf   = $jsonData['cpf'];
+        $pagamento = $jsonData['pagamento'];
+        $produto   = $jsonData['produto'];
+        $vendedor   = $jsonData['vendedor'];
 
-       $client = new Client();
+        return $email;
 
-        $options = [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'access_token' => env('API_TOKEN'),
-            ],
-            'json' => [
-                'name'      => 'Cliente Diego Brazil',
-                'cpfCnpj'   => $cpf,
-            ],
-        ];
+        // $client = new Client();
 
-        $response = $client->post(env('API_URL_ASSAS') . 'api/v3/customers', $options);
-        $body = (string) $response->getBody();
-        $data = json_decode($body, true);
+        // $options = [
+        //     'headers' => [
+        //         'Content-Type' => 'application/json',
+        //         'access_token' => env('API_TOKEN'),
+        //     ],
+        //     'json' => [
+        //         'name'      => 'Cliente Diego Brazil',
+        //         'cpfCnpj'   => $cpf,
+        //     ],
+        // ];
 
-        if ($response->getStatusCode() === 200) {
-            $options = [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'access_token' => env('API_TOKEN'),
-                ],
-                'json' => [
-                    'customer' => $data['id'],
-                    'billingType' => $pagamento,
-                    'value' => $produto == 1 ? 9.99 : ($produto == 2 ? 19.99 : 9.99),
-                    'dueDate' => Carbon::now()->addDay()->format('Y-m-d'),
-                    'description' => 'BRA - Produtos',
-                ],
-            ];
+        // $response = $client->post(env('API_URL_ASSAS') . 'api/v3/customers', $options);
+        // $body = (string) $response->getBody();
+        // $data = json_decode($body, true);
 
-            $response = $client->post(env('API_URL_ASSAS') . 'api/v3/payments', $options);
-            $body = (string) $response->getBody();
-            $data = json_decode($body, true);
+        // if ($response->getStatusCode() === 200) {
+        //     $options = [
+        //         'headers' => [
+        //             'Content-Type' => 'application/json',
+        //             'access_token' => env('API_TOKEN'),
+        //         ],
+        //         'json' => [
+        //             'customer' => $data['id'],
+        //             'billingType' => $pagamento,
+        //             'value' => $produto == 1 ? 9.99 : ($produto == 2 ? 19.99 : 9.99),
+        //             'dueDate' => Carbon::now()->addDay()->format('Y-m-d'),
+        //             'description' => 'BRA - Produtos',
+        //         ],
+        //     ];
 
-            if ($response->getStatusCode() === 200) {
+        //     $response = $client->post(env('API_URL_ASSAS') . 'api/v3/payments', $options);
+        //     $body = (string) $response->getBody();
+        //     $data = json_decode($body, true);
 
-                $ebook = Ebook::create([
-                    'cpf' => $cpf,
-                    'email' => $email,
-                    'valor' => $produto == 1 ? 9.99 : ($produto == 2 ? 19.99 : 9.99),
-                    'produto' => $produto,
-                    'status' => 'PENDING_PAY',
-                    'id_pay' => $data['id'],
-                    'id_vendedor' => $vendedor,
-                ]);
-                return [
-                    'paymentLink' => $data['invoiceUrl'],
-                ];
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        //     if ($response->getStatusCode() === 200) {
+
+        //         $ebook = Ebook::create([
+        //             'cpf' => $cpf,
+        //             'email' => $email,
+        //             'valor' => $produto == 1 ? 9.99 : ($produto == 2 ? 19.99 : 9.99),
+        //             'produto' => $produto,
+        //             'status' => 'PENDING_PAY',
+        //             'id_pay' => $data['id'],
+        //             'id_vendedor' => $vendedor,
+        //         ]);
+        //         return [
+        //             'paymentLink' => $data['invoiceUrl'],
+        //         ];
+        //     } else {
+        //         return false;
+        //     }
+        // } else {
+        //     return false;
+        // }
     }
 }
 
