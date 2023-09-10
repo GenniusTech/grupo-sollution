@@ -78,9 +78,9 @@ class AsaasController extends Controller
     }
 
     public function geraPagamento(Request $request) {
-        $jsonData = $request->json()->all();
+        //$jsonData = $request->json()->all();
 
-        var_dump($jsonData);
+        var_dump($request);
 
         // $email     = $jsonData['email'];
         // $cpf   = $jsonData['cpf'];
