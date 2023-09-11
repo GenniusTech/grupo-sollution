@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Ebook;
-use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Carbon\Carbon;
 
 use App\Models\Vendas;
+use App\Models\Ebook;
+use App\Models\User;
 
 class AsaasController extends Controller
 {
@@ -40,7 +41,7 @@ class AsaasController extends Controller
                 $ebook->status = 'PAYMENT_CONFIRMED';
                 $ebook->save();
 
-                if($this->trataProduto($ebook->id_produto, $ebook->id_vendedor)){
+                if($this->trataProduto($ebook->id_produto, $ebook->id_vendedor, $ebook->email)){
                     return response()->json(['status' => 'success', 'response' => 'Venda Confirmada!']);
                 } else {
                     return response()->json(['status' => 'error', 'response' => 'Venda Confirmada, mas sem tratamento!']);
@@ -51,7 +52,7 @@ class AsaasController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado']);
     }
 
-    public function trataProduto($produto, $vendedor) {
+    public function trataProduto($produto, $vendedor, $email = null) {
         switch ($produto) {
             case 1:
                 $vendedor = User::where('id', $vendedor)->first();
@@ -67,10 +68,38 @@ class AsaasController extends Controller
                 return true;
                 break;
             case 2:
-                return true;
+                if ($email) {
+                    $pdfPath = public_path('arquivos/ebook.pdf');
+                    if (file_exists($pdfPath)) {
+                        Mail::raw('Mensagem de e-mail', function ($message) use ($email, $pdfPath) {
+                            $message->to($email)->subject('Olá! Seu Ebook chegou!');
+                            $message->attach($pdfPath);
+                        });
+
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
                 break;
             case 3:
-                return true;
+                if ($email) {
+                    $pdfPath = public_path('arquivos/combo.pdf');
+                    if (file_exists($pdfPath)) {
+                        Mail::raw('Mensagem de e-mail', function ($message) use ($email, $pdfPath) {
+                            $message->to($email)->subject('Olá! Seu Ebook chegou!');
+                            $message->attach($pdfPath);
+                        });
+
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
                 break;
             default:
                 return true;
