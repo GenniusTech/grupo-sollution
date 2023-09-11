@@ -127,7 +127,7 @@ class AsaasController extends Controller
                 $ebook = Ebook::create([
                     'cpf' => $cpf,
                     'email' => $email,
-                    'valor' => $produto == 1 ? 9.99 : ($produto == 2 ? 19.99 : 9.99),
+                    'valor' => $produto == 1 ? 27 : ($produto == 2 ? 47 : 27),
                     'produto' => $produto,
                     'status' => 'PENDING_PAY',
                     'id_pay' => $data['id'],
