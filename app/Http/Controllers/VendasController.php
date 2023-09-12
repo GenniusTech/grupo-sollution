@@ -15,18 +15,21 @@ class VendasController extends Controller
     public function getVendas(Request $request, $id = null)
     {
         $user = auth()->user();
-        $produto = $id;
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
         $status = $request->input('status');
 
-        $vendasQuery = Vendas::where('id_vendedor', $user->id);
+        $vendasQuery = Vendas::query();
 
-        if ($produto) {
-            $vendasQuery->where('id_produto', $produto);
+        if (!is_null($id)) {
+            $vendasQuery->where('id_produto', $id);
         }
 
-        if ($status) {
+        if ($user->tipo != 1) {
+            $vendasQuery->where('id_vendedor', $user->id);
+        }
+
+        if ($status != 0) {
             $vendasQuery->where('status_pay', $status);
         }
 
@@ -39,9 +42,9 @@ class VendasController extends Controller
 
         $vendas = $vendasQuery->latest()->get();
 
-        return view('dashboard.vendas', [
+        return view('dashboard.vendas.vendas', [
             'vendas' => $vendas,
-            'produto' => $produto
+            'produto' => $id
         ]);
     }
 
@@ -72,6 +75,47 @@ class VendasController extends Controller
         $venda->save();
 
         return redirect()->away($paymentLinkData['paymentLink']);
+    }
+
+    public function vendaDireta($id = null)
+    {
+        return view('dashboard.vendas.venda', [ 'produto' => $id ]);
+    }
+
+    public function action_vendaDireta(Request $request) {
+        $request->validate([
+            'cpf'               => 'required',
+            'cliente'           => 'required|string|max:255',
+            'dataNascimento'    => 'required|string|max:20',
+            'email'             => 'string|max:100',
+            'whatsapp'          => 'required|string|max:20',
+        ]);
+
+        $vendaData = $this->prepareVendaData($request, $request->id_vendedor);
+        $venda = Vendas::create($vendaData);
+
+        if (!$venda) {
+            return view('dashboard.vendas.vendas.venda', [ 'produto' => $request->produto, 'msgErro' => 'Não foi possivel realizar essa venda, tente novamente mais tarde!']);
+        }
+
+        if($request->assas == 'true'){
+            $paymentLinkData = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor);
+
+            if (!$paymentLinkData) {
+                return view('dashboard.vendas.vendas.venda', [ 'produto' => $request->produto, 'msgErro' => 'Não foi possivel gerar o link de pagamento para essa venda, tente novamente mais tarde!']);
+            }
+
+            $venda->id_pay = $paymentLinkData['paymentId'];
+            $venda->status_pay = 'PENDING';
+            $venda->save();
+
+            return view('dashboard.vendas.vendas.venda', [ 'produto' => $request->produto, 'msgSuccesso' => 'Venda realizada com sucesso, envie o link de Pagamento para o cliente: <a id="copiarLink(this)" data-link="'.$paymentLinkData['paymentLink'].'">'.$paymentLinkData['paymentLink'].'</a>' ]);
+        }
+
+        $venda->status_pay = 'PENDING';
+        $venda->save();
+
+        return view('dashboard.vendas.venda', [ 'produto' => $request->produto, 'msgSuccesso' => 'Venda realizada com sucesso, não foi gerado link de Pagamento!']);
     }
 
     private function prepareVendaData(Request $request, $id)

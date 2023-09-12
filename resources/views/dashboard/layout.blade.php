@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" type="image/png" href="{{ asset('admin/assets/logo.png') }}" />
 
-    <title>Vendas - Grupo Sollution</title>
+    <title>CRM - Grupo Sollution</title>
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -28,8 +28,7 @@
             <hr class="sidebar-divider my-0">
 
             <li class="nav-item active">
-                <a class="nav-link" href="/dashboard"> <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Dashboard</span></a>
+                <a class="nav-link" href="/dashboard"> <i class="fas fa-fw fa-chart-area"></i> <span>Dashboard</span></a>
             </li>
 
             <hr class="sidebar-divider">
@@ -49,10 +48,11 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="/vendas/1">Minhas Vendas</a>
                         @if(Auth::user()->id != 7)
-                            <a class="collapse-item" href="{{ url('/limpanome/' . auth()->id()) }}" target="_BLANK">Vender</a>
+                            <a class="collapse-item" href="{{ url('/limpanome/' . auth()->id()) }}" target="_BLANK">Venda Online</a>
                         @else
-                            <a class="collapse-item" href="{{ url('/kannanda/' . auth()->id()) }}" target="_BLANK">Vender</a>
+                            <a class="collapse-item" href="{{ url('/kannanda/' . auth()->id()) }}" target="_BLANK">Venda Online</a>
                         @endif
+                        <a class="collapse-item" href="/vendaDireta/1">Venda Direta</a>
                     </div>
                 </div>
             </li>
@@ -71,7 +71,9 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ route('saque') }}">Saques/Extrato</a>
-                        @if (Auth::user()->tipo == 1) <a class="collapse-item" href="{{ route('wallet') }}">Carteira</a> @endif
+                        @if (Auth::user()->tipo == 1) <a class="collapse-item" href="/wallet">Carteira</a> @endif
+                        @if (Auth::user()->tipo == 1) <a class="collapse-item" href="/vendas/1">Vendas</a> @endif
+                        @if (Auth::user()->tipo == 1) <a class="collapse-item" href="{{ route('wallet') }}">Gráficos</a> @endif
                     </div>
                 </div>
             </li>
@@ -81,17 +83,49 @@
             </div>
 
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseParceria"
+                    aria-expanded="true" aria-controls="collapseParceria">
+                    <i class="fa fa-users"></i>
+                    <span>Parcerias</span>
+                </a>
+                <div id="collapseParceria" class="collapse" aria-labelledby="headingParceria"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="/usuario">Afiliados</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGestao"
                     aria-expanded="true" aria-controls="collapseGestao">
-                    <i class="fa fa-check"></i>
-                    <span>Parcerias</span>
+                    <i class="fa fa-building"></i>
+                    <span>Gerenciamento</span>
                 </a>
                 <div id="collapseGestao" class="collapse" aria-labelledby="headingGestao"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        @if (Auth::user()->tipo == 1) <a class="collapse-item" href="/usuario/1">Administradores</a> @endif
-                        <a class="collapse-item" href="/usuario/2">Afiliados</a>
-                        <a class="collapse-item" href="/usuario/3">Influences</a>
+                        <a class="collapse-item" href="/usuario">Fornecedores</a>
+                        <a class="collapse-item" href="/usuario">Colaboradores</a>
+                        <a class="collapse-item" href="/usuario">Pagamentos</a>
+                        <a class="collapse-item" href="/usuario">Recebíveis</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMarketing"
+                    aria-expanded="true" aria-controls="collapseMarketing">
+                    <i class="fa fa-file-audio"></i>
+                    <span>Marketing Digital</span>
+                </a>
+                <div id="collapseMarketing" class="collapse" aria-labelledby="headingMarketing"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="/usuario">Materiais Disponível</a>
+                        <a class="collapse-item" href="/usuario">Enviar Material</a>
+                        <a class="collapse-item" href="/usuario">Comunicados</a>
+                        <a class="collapse-item" href="/usuario">Alertas</a>
                     </div>
                 </div>
             </li>

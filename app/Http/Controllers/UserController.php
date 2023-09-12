@@ -60,12 +60,13 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Perfil atualizado com sucesso.');
     }
 
-    public function usuario($tipo)
+    public function usuario()
     {
-        $usuarios = User::where('tipo', $tipo);
+        $user = Auth::user();
+        $usuarios = User::where('id_patrocinador', $user->id);
 
         return view('dashboard.gestao.usuario', [
-            'usuarios' => $usuarios->get(),
+            'usuarios' => $user->tipo != 1 ? $usuarios->get() : User::all(),
         ]);
     }
 

@@ -3,7 +3,7 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Minhas Vendas</h1>
+            <h1 class="h3 mb-0 text-gray-800">Vendas</h1>
         </div>
 
         <div class="row">
@@ -30,7 +30,7 @@
                                                             <div class="col-12">
                                                                 <div class="form-group">
                                                                     <select class="form-control"  name="status">
-                                                                        <option value="PAYMENT_CONFIRMED">Status</option>
+                                                                        <option value="0">Status</option>
                                                                         <option value="PAYMENT_CONFIRMED">Aprovados</option>
                                                                         <option value="PENDING">Pendentes de Pagamento</option>
                                                                     </select>
@@ -68,6 +68,7 @@
                                                 <th>ID</th>
                                                 <th>Cliente</th>
                                                 <th>Produto</th>
+                                                @if(Auth::user()->tipo == 1) <th  class="text-center">Valor</th> @endif
                                                 <th>Status</th>
                                                 <th>Data venda</th>
                                             </tr>
@@ -86,6 +87,9 @@
                                                             Produto Desconhecido
                                                     @endswitch
                                                 </td>
+                                                @if(Auth::user()->tipo == 1)
+                                                    <td class="text-center">R$ {{ number_format($venda->valor, 2, ',', '.') }}</td>
+                                                @endif
                                                 <td>
                                                     @switch($venda->status_pay)
                                                         @case('PAYMENT_CONFIRMED')

@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\UserController;
@@ -29,13 +28,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/vendas/{id}', [VendasController::class, 'getVendas'])->name('vendas');
     Route::post('vendas', [VendasController::class, 'getVendas'])->name('vendas');
 
-    Route::get('/usuario/{tipo}', [UserController::class, 'usuario'])->name('usuario');
+    Route::get('/vendaDireta/{id}', [VendasController::class, 'vendaDireta'])->name('vendaDireta');
+    Route::post('action_vendaDireta', [VendasController::class, 'action_vendaDireta'])->name('action_vendaDireta');
+
+    Route::get('/usuario', [UserController::class, 'usuario'])->name('usuario');
     Route::post('usuario', [UserController::class, 'action_usuario'])->name('usuario');
 
     Route::get('/perfil',[UserController::class, 'perfil'])->name('perfil');
     Route::post('perfil', [UserController::class, 'action_perfil'])->name('perfil');
 
     Route::get('/saque', [FinanceiroController::class, 'index'])->name('saque');
+    Route::get('/saqueExtrato', [FinanceiroController::class, 'saqueExtrato'])->name('saqueExtrato');
+    Route::post('saqueExtrato', [FinanceiroController::class, 'saqueExtrato'])->name('saqueExtrato');
     Route::post('saque', [FinanceiroController::class, 'saque'])->name('saque');
 
     Route::get('/wallet', [FinanceiroController::class, 'wallet'])->name('wallet');

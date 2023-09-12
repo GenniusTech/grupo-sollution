@@ -3,7 +3,7 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Minhas Vendas</h1>
+            <h1 class="h3 mb-0 text-gray-800">Carteira</h1>
         </div>
 
         <div class="row">
@@ -14,7 +14,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     Carteira (Total em Vendas)</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">R$ {{ $vendaSUM }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">R$ {{ number_format($vendaSUM, 2, ',', '.') }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-fw fa-folder fa-2x text-gray-300"></i>
@@ -31,7 +31,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     Saques (Pedidos de saque)</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">R$ {{ $saqueSUM }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">R$ {{ number_format($saquePendente, 2, ',', '.') }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -47,8 +47,8 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Vendas (Total)</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $vendaCOUNT }}</div>
+                                    Saques (Dépositos realizados)</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">R$ {{ number_format($saqueAtendido, 2, ',', '.') }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -61,7 +61,21 @@
 
         <div class="row">
             <div class="col-xl-12 col-md-12 mb-4">
-                <div class="card border-left-dark shadow h-100 py-2">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-success">Solicitações de Saque</h6>
+                        <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header">Opções:</div>
+                                <a class="dropdown-item" id="exportar">Gerar Excel</a>
+                                <a class="dropdown-item" href="/saqueExtrato">Extrato de Saques</a>
+                                <a class="dropdown-item" href="#">Confirmar Pagamento de todos</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
@@ -80,7 +94,6 @@
                                     </div>
                                 @endif
                                 <div class="table-responsive">
-                                    <button class="btn btn-outline-primary w-25 m-2" type="button" id="exportar">Excel</button>
                                     <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>

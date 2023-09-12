@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Saques;
+use App\Models\User;
 use App\Models\Vendas;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class FinanceiroController extends Controller
 {
@@ -18,6 +20,30 @@ class FinanceiroController extends Controller
         $vendaSUM   = Vendas::where('id_vendedor', $user)->where('status_pay', 'PAYMENT_CONFIRMED')->sum('valor');
 
         return view('dashboard.financeiro.saque', ['saques' => $saques, 'vendaCOUNT' => $vendaCOUNT, 'vendaSUM' => $vendaSUM]);
+    }
+
+    public function saqueExtrato(Request $request) {
+        $saques = Saques::where('status', 1);
+        $usuarios = User::all();
+
+        $dataInicio = $request->input('data_inicio');
+        $dataFim = $request->input('data_fim');
+        $usuario = $request->input('usuario');
+
+        if($usuario != 0) {
+            $saques->where('id_usuario', $usuario);
+        }
+
+        if($dataInicio && $dataFim){
+            $dataInicio = Carbon::parse($dataInicio);
+            $dataFim = Carbon::parse($dataFim);
+
+            $saques->whereBetween('updated_at', [$dataInicio, $dataFim]);
+        }
+
+        $saques = $saques->latest()->get();
+
+        return view('dashboard.financeiro.extratoSaque', ['saques' => $saques, 'usuarios' => $usuarios]);
     }
 
     public function saque(Request $request) {
@@ -57,11 +83,11 @@ class FinanceiroController extends Controller
 
     public function wallet() {
         $saques = Saques::where('status', 0)->get();
-        $saqueSUM = Saques::where('status', 0)->sum('valor');
-        $vendaCOUNT = Vendas::where('status_pay', 'PAYMENT_CONFIRMED')->count();
+        $saquePendente = Saques::where('status', 0)->sum('valor');
+        $saqueAtendido = Saques::where('status', 1)->sum('valor');
         $vendaSUM   = Vendas::where('status_pay', 'PAYMENT_CONFIRMED')->sum('valor');
 
-        return view('dashboard.financeiro.wallet', ['saques' => $saques, 'saqueSUM' => $saqueSUM, 'vendaCOUNT' => $vendaCOUNT, 'vendaSUM' => $vendaSUM]);
+        return view('dashboard.financeiro.wallet', ['saques' => $saques, 'saquePendente' => $saquePendente, 'saqueAtendido' => $saqueAtendido, 'vendaSUM' => $vendaSUM]);
     }
 
     public function confirmaPagamento(Request $request) {

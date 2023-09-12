@@ -52,7 +52,7 @@
                                                                         <option value="1">Tipo</option>
                                                                         @if (Auth::user()->tipo == 1) <option value="3">Administrador</option> @endif
                                                                         <option value="3">Influencer</option>
-                                                                        <option value="2">Afiliados</option>
+                                                                        <option value="2">Afiliado</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -102,7 +102,7 @@
                                                 <th>ID</th>
                                                 <th>Nome</th>
                                                 <th class="text-center">Comissão</th>
-                                                <th class="text-center">Saldo</th>
+                                                @if(Auth::user()->tipo == 1) <th class="text-center">Saldo</th> @endif
                                                 <th class="text-center">Data Cadastro</th>
                                             </tr>
                                         </thead>
@@ -112,7 +112,7 @@
                                                 <td>{{ $usuario->id }}</td>
                                                 <td>{{ $usuario->nome }}</td>
                                                 <td class="text-center">{{ number_format($usuario->comissao, 2, ',', '.') }}</td>
-                                                <td class="text-center">{{ number_format($usuario->saldo, 2, ',', '.') }}</td>
+                                                @if(Auth::user()->tipo == 1) <td class="text-center">{{ number_format($usuario->saldo, 2, ',', '.') }}</td> @endif
                                                 <td class="text-center">{{ \Carbon\Carbon::parse($usuario->created_at)->format('d/m/Y') }}</td>
                                             </tr>
                                             @endforeach
