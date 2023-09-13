@@ -69,13 +69,12 @@ class AsaasController extends Controller
                 break;
             case 2:
                 if ($email) {
-                    $pdfPath = public_path('arquivos/ebook.pdf');
+                    $pdfPath = public_path('arquivos/ebook.zip');
                     if (file_exists($pdfPath)) {
                         Mail::raw('Mensagem de e-mail', function ($message) use ($email, $pdfPath) {
                             $message->to($email)->subject('Olá! Seu Ebook chegou!');
                             $message->attach($pdfPath);
                         });
-
                         return true;
                     } else {
                         return false;
@@ -92,7 +91,6 @@ class AsaasController extends Controller
                             $message->to($email)->subject('Olá! Seu Ebook chegou!');
                             $message->attach($pdfPath);
                         });
-
                         return true;
                     } else {
                         return false;
