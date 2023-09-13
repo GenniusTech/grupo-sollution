@@ -41,7 +41,7 @@ class AsaasController extends Controller
                 $ebook->status = 'PAYMENT_CONFIRMED';
                 $ebook->save();
 
-                if($this->trataProduto($ebook->id_produto, $ebook->id_vendedor, $ebook->email)){
+                if($this->trataProduto($ebook->produto, $ebook->id_vendedor, $ebook->email)){
                     return response()->json(['status' => 'success', 'response' => 'Venda Confirmada!']);
                 } else {
                     return response()->json(['status' => 'error', 'response' => 'Venda Confirmada, mas sem tratamento!']);
@@ -85,7 +85,7 @@ class AsaasController extends Controller
                 break;
             case 3:
                 if ($email) {
-                    $pdfPath = public_path('arquivos/combo.pdf');
+                    $pdfPath = public_path('arquivos/combo.zip');
                     if (file_exists($pdfPath)) {
                         Mail::raw('Mensagem de e-mail', function ($message) use ($email, $pdfPath) {
                             $message->to($email)->subject('Olá! Seu Ebook chegou!');
@@ -139,7 +139,7 @@ class AsaasController extends Controller
                 'json' => [
                     'customer' => $data['id'],
                     'billingType' => $pagamento,
-                    'value' => $produto == 1 ? 9.99 : ($produto == 2 ? 19.99 : 9.99),
+                    'value' => $produto == 1 ? 27 : ($produto == 2 ? 47 : 27),
                     'dueDate' => Carbon::now()->addDay()->format('Y-m-d'),
                     'description' => 'BRA - Produtos',
                 ],
