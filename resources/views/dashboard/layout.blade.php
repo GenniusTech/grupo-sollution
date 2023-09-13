@@ -9,11 +9,11 @@
     <title>CRM - Grupo Sollution</title>
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
     <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('admin/css/sb-admin-2.css') }}" rel="stylesheet">
     <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
     <script src="{{ asset('admin/js/pesquisa.js') }}"></script>
 </head>
 
@@ -97,6 +97,7 @@
                 </div>
             </li>
 
+            @if (Auth::user()->tipo == 1)
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMarketing"
                     aria-expanded="true" aria-controls="collapseMarketing">
@@ -111,6 +112,7 @@
                     </div>
                 </div>
             </li>
+            @endif
 
             <hr class="sidebar-divider d-none d-md-block">
 
