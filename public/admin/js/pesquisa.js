@@ -15,8 +15,8 @@ function copiaLink(botao) {
     )
 }
 
-$(document).ready(function() {
-    $('#exportar').click(function() {
+$(document).ready(function () {
+    $('#exportar').click(function () {
         var tabela = document.getElementById('tabela');
         var wb = XLSX.utils.table_to_book(tabela, { sheet: 'Sheet 1' });
         var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
@@ -38,6 +38,6 @@ $(document).ready(function() {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        setTimeout(function() { URL.revokeObjectURL(url); }, 100);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 100);
     });
 });

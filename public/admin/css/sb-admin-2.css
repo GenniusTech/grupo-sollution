@@ -11295,3 +11295,51 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+/* Estilo básico do carrossel */
+.notifications-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.notifications-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    animation: marquee 15s linear infinite;
+}
+
+.notification {
+    display: inline-block;
+    margin-right: 15px;
+    animation: blink 1s alternate infinite;
+}
+
+/* Animação de rolagem lateral */
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Animação de piscar */
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}
+
+
+
+
+
+
+

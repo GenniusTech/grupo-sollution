@@ -5,6 +5,7 @@ use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendasController;
 use App\Http\Controllers\FinanceiroController;
+use App\Http\Controllers\MarketingController;
 use Illuminate\Support\Facades\Route;
 
 //Login
@@ -38,9 +39,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('perfil', [UserController::class, 'action_perfil'])->name('perfil');
 
     Route::get('/saque', [FinanceiroController::class, 'index'])->name('saque');
+    Route::post('saque', [FinanceiroController::class, 'saque'])->name('saque');
     Route::get('/saqueExtrato', [FinanceiroController::class, 'saqueExtrato'])->name('saqueExtrato');
     Route::post('saqueExtrato', [FinanceiroController::class, 'saqueExtrato'])->name('saqueExtrato');
-    Route::post('saque', [FinanceiroController::class, 'saque'])->name('saque');
+
+    Route::get('/marketing/{id}', [MarketingController::class, 'marketing'])->name('marketing');
+    Route::get('/materiais', [MarketingController::class, 'materiais'])->name('materiais');
+    Route::post('materiais', [MarketingController::class, 'action_materiais'])->name('materiais');
+    Route::post('materiais_delete', [MarketingController::class, 'materiais_delete'])->name('materiais_delete');
+
+    Route::get('/notificacoes', [MarketingController::class, 'notificacoes'])->name('notificacoes');
+    Route::post('notificacoes', [MarketingController::class, 'action_notificacoes'])->name('notificacoes');
+    Route::post('notificacoes_delete', [MarketingController::class, 'notificacoes_delete'])->name('notificacoes_delete');
 
     Route::get('/wallet', [FinanceiroController::class, 'wallet'])->name('wallet');
     Route::post('confirmaPagamento', [FinanceiroController::class, 'confirmaPagamento'])->name('confirmaPagamento');

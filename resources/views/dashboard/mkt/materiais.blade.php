@@ -3,7 +3,7 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Parcerias/Afiliados</h1>
+            <h1 class="h3 mb-0 text-gray-800">Materiais/Marketing</h1>
         </div>
 
         <div class="row">
@@ -18,52 +18,40 @@
                                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <form method="POST" action="{{ route('usuario') }}">
+                                                <form method="POST" action="{{ route('materiais') }}" enctype="multipart/form-data">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Cadastro de Parceiro</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">Cadastro de Material</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <input type="hidden" value={{  csrf_token() }} name="_token">
                                                         <div class="row">
-                                                            <div class="col-6">
+                                                            <div class="col-12">
                                                                 <div class="form-group">
                                                                     <input type="text" class="form-control" name="nome" placeholder="Nome">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-6">
+                                                            <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <input type="number" class="form-control" name="cpf" placeholder="CPF">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="form-group">
-                                                                    <input type="email" class="form-control" name="email" placeholder="Email">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="form-group">
-                                                                    <input type="password" class="form-control" name="password" placeholder="Senha">
+                                                                    <input type="text" class="form-control" name="descricao" placeholder="Descrição">
                                                                 </div>
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <select class="form-control"  name="tipo">
-                                                                        <option value="1">Tipo</option>
-                                                                        @if (Auth::user()->tipo == 1) <option value="3">Administrador</option> @endif
-                                                                        <option value="3">Influencer</option>
-                                                                        <option value="2">Afiliado</option>
+                                                                    <input type="file" class="form-control" name="arquivo">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" name="url" placeholder="URL (se não enviar um arquivo)">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <select class="form-control"  name="id_produto">
+                                                                        <option value="1">Produto</option>
+                                                                        <option value="1">Limpa Nome</option>
                                                                     </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="form-group">
-                                                                    <input type="number" class="form-control" name="comissao" placeholder="Comissão Máx: {{ Auth::user()->comissao }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="form-group">
-                                                                    <input type="text" class="form-control" name="chave_pix" placeholder="Informe uma chave pix">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -101,19 +89,31 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Nome</th>
-                                                <th class="text-center">Comissão</th>
-                                                @if(Auth::user()->tipo == 1) <th class="text-center">Saldo</th> @endif
-                                                <th class="text-center">Data Cadastro</th>
+                                                <th>Descrição</th>
+                                                <th class="text-center">Arquivo/Url</th>
+                                                <th class="text-center">Opções</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($usuarios as $key =>$usuario)
+                                            @foreach ($materiais as $key =>$material)
                                             <tr>
-                                                <td>{{ $usuario->id }}</td>
-                                                <td>{{ $usuario->nome }}</td>
-                                                <td class="text-center">{{ number_format($usuario->comissao, 2, ',', '.') }}</td>
-                                                @if(Auth::user()->tipo == 1) <td class="text-center">{{ number_format($usuario->saldo, 2, ',', '.') }}</td> @endif
-                                                <td class="text-center">{{ \Carbon\Carbon::parse($usuario->created_at)->format('d/m/Y') }}</td>
+                                                <td>{{ $material->id }}</td>
+                                                <td>{{ $material->nome }}</td>
+                                                <td>{{ $material->descricao }}</td>
+                                                <td class="text-center">
+                                                    @if (Str::startsWith($material->arquivo, '/storage/'))
+                                                        <a class="btn btn-outline-success" href="{{ asset($material->arquivo) }}" target="_blank">Baixar</a>
+                                                    @else
+                                                        <a class="btn btn-outline-success" href="{{ $material->arquivo }}" target="_blank">Acessar</a>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    <form action="{{ route('materiais_delete') }}" method="POST">
+                                                        <input type="hidden" value={{  csrf_token() }} name="_token">
+                                                        <input type="hidden" name="id" value="{{ $material->id }}">
+                                                        <button type="submit" class="btn btn-outline-danger">Excluir</button>
+                                                    </form>
+                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>

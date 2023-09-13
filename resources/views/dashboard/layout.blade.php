@@ -14,6 +14,7 @@
     <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
+    <script src="{{ asset('admin/js/pesquisa.js') }}"></script>
 </head>
 
 <body id="page-top">
@@ -47,6 +48,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="/vendas/1">Minhas Vendas</a>
+                        <a class="collapse-item" href="/marketing/1">Marketing Digital</a>
                         @if(Auth::user()->id != 7)
                             <a class="collapse-item" href="{{ url('/limpanome/' . auth()->id()) }}" target="_BLANK">Venda Online</a>
                         @else
@@ -73,7 +75,6 @@
                         <a class="collapse-item" href="{{ route('saque') }}">Saques/Extrato</a>
                         @if (Auth::user()->tipo == 1) <a class="collapse-item" href="/wallet">Carteira</a> @endif
                         @if (Auth::user()->tipo == 1) <a class="collapse-item" href="/vendas/1">Vendas</a> @endif
-                        @if (Auth::user()->tipo == 1) <a class="collapse-item" href="{{ route('wallet') }}">Gráficos</a> @endif
                     </div>
                 </div>
             </li>
@@ -97,23 +98,6 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGestao"
-                    aria-expanded="true" aria-controls="collapseGestao">
-                    <i class="fa fa-building"></i>
-                    <span>Gerenciamento</span>
-                </a>
-                <div id="collapseGestao" class="collapse" aria-labelledby="headingGestao"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/usuario">Fornecedores</a>
-                        <a class="collapse-item" href="/usuario">Colaboradores</a>
-                        <a class="collapse-item" href="/usuario">Pagamentos</a>
-                        <a class="collapse-item" href="/usuario">Recebíveis</a>
-                    </div>
-                </div>
-            </li>
-
-            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMarketing"
                     aria-expanded="true" aria-controls="collapseMarketing">
                     <i class="fa fa-file-audio"></i>
@@ -122,10 +106,8 @@
                 <div id="collapseMarketing" class="collapse" aria-labelledby="headingMarketing"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/usuario">Materiais Disponível</a>
-                        <a class="collapse-item" href="/usuario">Enviar Material</a>
-                        <a class="collapse-item" href="/usuario">Comunicados</a>
-                        <a class="collapse-item" href="/usuario">Alertas</a>
+                        <a class="collapse-item" href="/materiais">Materiais</a>
+                        <a class="collapse-item" href="/notificacoes">Mensagens</a>
                     </div>
                 </div>
             </li>
@@ -149,6 +131,13 @@
 
                     <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <p>Olá, {{ Auth::user()->nome }}. Bem-vindo(a)!</p>
+                        <div class="notifications-container">
+                            <ul class="notifications-list">
+                                @foreach ($notificacoes as $notificacao)
+                                    <li class="notification text-success">{{ $notificacao->mensagem }} -</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
 
                     <ul class="navbar-nav ml-auto">
@@ -227,7 +216,6 @@
     <script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
-    <script src="{{ asset('admin/js/pesquisa.js') }}"></script>
 
 </body>
 
