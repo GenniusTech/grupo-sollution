@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Ebook as MailEbook;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
@@ -42,9 +43,9 @@ class AsaasController extends Controller
                 $ebook->save();
 
                 if($this->trataProduto($ebook->produto, $ebook->id_vendedor, $ebook->email)){
-                    return response()->json(['status' => 'success', 'response' => 'Venda Confirmada!']);
+                    return response()->json(['status' => 'success', 'response' => 'Ebook Confirmado!']);
                 } else {
-                    return response()->json(['status' => 'error', 'response' => 'Venda Confirmada, mas sem tratamento!']);
+                    return response()->json(['status' => 'error', 'response' => 'Ebook Confirmado, mas sem tratamento!']);
                 }
             }
         }
@@ -58,50 +59,34 @@ class AsaasController extends Controller
                 $vendedor = User::where('id', $vendedor)->first();
                 $patrocinador = User::where('id', $vendedor->id_patrocinador)->first();
 
-                //Atribui Comissão Vendedor
                 $vendedor->saldo = $vendedor->saldo + $vendedor->comissao;
                 $vendedor->save();
-                //Atribui Comissão Patrocinador
                 $patrocinador->saldo = $patrocinador->saldo + ( $patrocinador->comissao - $vendedor->comissao);
                 $patrocinador->save();
-
                 return true;
                 break;
             case 2:
-                if ($email) {
-                    $pdfPath = public_path('arquivos/ebook.zip');
-                    if (file_exists($pdfPath)) {
-                        Mail::raw('Mensagem de e-mail', function ($message) use ($email, $pdfPath) {
-                            $message->to($email)->subject('Olá! Seu Ebook chegou!');
-                            $message->attach($pdfPath);
-                        });
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
+                return $this->enviaEmail($email, $produto);
                 break;
             case 3:
-                if ($email) {
-                    $pdfPath = public_path('arquivos/combo.zip');
-                    if (file_exists($pdfPath)) {
-                        Mail::raw('Mensagem de e-mail', function ($message) use ($email, $pdfPath) {
-                            $message->to($email)->subject('Olá! Seu Ebook chegou!');
-                            $message->attach($pdfPath);
-                        });
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
+                return $this->enviaEmail($email, $produto);
                 break;
             default:
                 return true;
         }
+    }
+
+    public function enviaEmail($email, $produto)
+    {
+        $sent = Mail::to($email)->send(new MailEbook([
+            'fromName'      => 'Diego Brazil',
+            'fromEmail'     => env('MAIL_USERNAME'),
+            'subject'       => 'Chegou seu Ebook!',
+            'message'       => 'Olá! Informamos que recebemos o seu pagamento e estamos te enviando o seu E-book. Boa Leitura!',
+            'attachment'    => ($produto == 2) ? 'ebook.zip' : (($produto == 3) ? 'combo.zip' : 'ebook.zip')
+        ]));
+
+        return true;
     }
 
     public function geraPagamento(Request $request) {
