@@ -95,21 +95,21 @@ class VendasController extends Controller
         $venda = Vendas::create($vendaData);
 
         if (!$venda) {
-            return view('dashboard.vendas.vendas.venda', [ 'produto' => $request->produto, 'msgErro' => 'Não foi possivel realizar essa venda, tente novamente mais tarde!']);
+            return view('dashboard.vendas.venda', [ 'produto' => $request->produto, 'msgErro' => 'Não foi possivel realizar essa venda, tente novamente mais tarde!']);
         }
 
         if($request->assas == 'true'){
             $paymentLinkData = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor);
 
             if (!$paymentLinkData) {
-                return view('dashboard.vendas.vendas.venda', [ 'produto' => $request->produto, 'msgErro' => 'Não foi possivel gerar o link de pagamento para essa venda, tente novamente mais tarde!']);
+                return view('dashboard.vendas.venda', [ 'produto' => $request->produto, 'msgErro' => 'Não foi possivel gerar o link de pagamento para essa venda, tente novamente mais tarde!']);
             }
 
             $venda->id_pay = $paymentLinkData['paymentId'];
             $venda->status_pay = 'PENDING';
             $venda->save();
 
-            return view('dashboard.vendas.vendas.venda', [ 'produto' => $request->produto, 'msgSuccesso' => 'Venda realizada com sucesso, envie o link de Pagamento para o cliente: <a id="copiarLink(this)" data-link="'.$paymentLinkData['paymentLink'].'">'.$paymentLinkData['paymentLink'].'</a>' ]);
+            return view('dashboard.vendas.venda', [ 'produto' => $request->produto, 'msgSuccesso' => 'Venda realizada com sucesso, envie o link de Pagamento para o cliente: <a id="copiarLink(this)" data-link="'.$paymentLinkData['paymentLink'].'">'.$paymentLinkData['paymentLink'].'</a>' ]);
         }
 
         $venda->status_pay = 'PENDING';

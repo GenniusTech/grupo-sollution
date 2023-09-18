@@ -60,7 +60,7 @@
                                 </div>
                             </div>
 
-                            <div id="resultado" class="col-12">
+                            <div id="resultado" class="col-12 d-none">
                                 <form method="POST" action="{{ route('action_vendaDireta') }}">
                                     <input type="hidden" value={{ csrf_token() }} name="_token">
                                     <input type="hidden" name="id_vendedor" value="{{ Auth::user()->id }}">
@@ -76,7 +76,7 @@
                                         </div>
                                         <div class="col-sm-12 col-lg-3">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="cpf" placeholder="CPF">
+                                                <input type="text" class="form-control" name="cpf" placeholder="CPF/CNPJ">
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-lg-3">
@@ -116,5 +116,64 @@
         </div>
 
     </div>
+
+    <script>
+        $('#consultar').click( function(){
+            var cpfCnpj = $('#cpf').val();
+            $('#resultado').addClass('d-none');
+
+            if(cpfCnpj > 12) {
+                Swal.fire({
+                    title: "Atenção!",
+                    text: "Aguarde enquanto buscamos os dados!",
+                    timer: 5000,
+                    timerProgressBar: true,
+                    icon: "info",
+                    showConfirmButton: false
+                });
+
+                $.ajax({
+                    url: 'https://hyb.com.br/curl_cnpj.php?action=acessa_curl&cnpj=' + cpfCnpj,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        if(data.cnpj != null) {
+                            $('input[name=cliente]').val(data.razao_social);
+                            $('input[name=cpf]').val(data.cnpj);
+                            $('input[name=email]').val(data.email);
+                            $('input[name=dataNascimento]').val(data.data_inicio_ativ);
+                            $('input[name=whatsapp]').val(data.telefone_1);
+
+                            $('#resultado').removeClass('d-none');
+                        } else {
+                            Swal.fire({
+                                title: "Atenção!",
+                                text: "Não encontramos nenhuma informação do Cliete!",
+                                timer: 3000,
+                                timerProgressBar: true,
+                                icon: "error",
+                                showConfirmButton: false
+                            });
+
+                            $('#resultado').removeClass('d-none');
+                        }
+
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            title: "Atenção!",
+                            text: "Não encontramos nenhuma informação do Cliete!",
+                            timer: 3000,
+                            timerProgressBar: true,
+                            icon: "error",
+                            showConfirmButton: false
+                        });
+
+                        $('#resultado').removeClass('d-none');
+                    }
+                });
+            }
+        });
+    </script>
 
     @endsection

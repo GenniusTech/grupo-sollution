@@ -44,7 +44,7 @@
                                                 <td>{{ $material->descricao }}</td>
                                                 <td class="text-center">
                                                     @if (Str::startsWith($material->arquivo, '/storage/'))
-                                                        <a class="btn btn-outline-success" href="{{ asset($material->arquivo) }}" target="_blank">Baixar</a>
+                                                        <a class="btn btn-outline-success" href="{{ asset($material->arquivo) }}" download>Baixar</a>
                                                     @else
                                                         <a class="btn btn-outline-success" href="{{ $material->arquivo }}" target="_blank">Acessar</a>
                                                     @endif
