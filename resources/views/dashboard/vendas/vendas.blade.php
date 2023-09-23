@@ -68,7 +68,7 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Cliente</th>
-                                                <th>Produto</th>
+                                                <th>CPF</th>
                                                 @if(Auth::user()->tipo == 1) <th  class="text-center">Valor</th> @endif
                                                 <th>Status</th>
                                                 <th>Data venda</th>
@@ -79,15 +79,7 @@
                                             <tr>
                                                 <td>{{ $venda->id }}</td>
                                                 <td>{{ $venda->nome }}</td>
-                                                <td>
-                                                    @switch($venda->id_produto)
-                                                        @case(1)
-                                                            Limpa Nome
-                                                            @break
-                                                        @default
-                                                            Produto Desconhecido
-                                                    @endswitch
-                                                </td>
+                                                <td> {{ $venda->cpf }} </td>
                                                 @if(Auth::user()->tipo == 1)
                                                     <td class="text-center">R$ {{ number_format($venda->valor, 2, ',', '.') }}</td>
                                                 @endif
