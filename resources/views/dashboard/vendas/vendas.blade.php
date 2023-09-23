@@ -63,7 +63,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="table-responsive">
-                                    <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                                    <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
