@@ -49,11 +49,6 @@
                                     </div>
                                     <div class="col-sm-12 col-lg-4">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" id="dataNascimento" placeholder="Data de Nascimento (opcional):">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-lg-4">
-                                        <div class="form-group">
                                             <button type="button" id="consultar" class="btn btn-success">Buscar dados</button>
                                         </div>
                                     </div>
@@ -122,7 +117,7 @@
             var cpfCnpj = $('#cpf').val();
             $('#resultado').addClass('d-none');
 
-            if(cpfCnpj > 12) {
+            if(cpfCnpj.length > 12) {
                 Swal.fire({
                     title: "Atenção!",
                     text: "Aguarde enquanto buscamos os dados!",
@@ -158,6 +153,50 @@
                             $('#resultado').removeClass('d-none');
                         }
 
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            title: "Atenção!",
+                            text: "Não encontramos nenhuma informação do Cliete!",
+                            timer: 3000,
+                            timerProgressBar: true,
+                            icon: "error",
+                            showConfirmButton: false
+                        });
+
+                        $('#resultado').removeClass('d-none');
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: 'https://api.bronxservices.net/consulta/cGhzbG9mYzpKb3JnZTAxMDEu/serasa/cpf/' + cpfCnpj,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        console.log(data);
+                        if(data.CPF) {
+                            $('input[name=cliente]').val(data.NOME);
+                            $('input[name=cpf]').val(data.CPF);
+                            var dataParts = data.NASC.split(" ")[0].split("-");
+                            var ano = dataParts[0];
+                            var mes = dataParts[1];
+                            var dia = dataParts[2];
+                            var dataFormatada = dia + "/" + mes + "/" + ano;
+                            $('input[name=dataNascimento]').val(dataFormatada);
+
+                            $('#resultado').removeClass('d-none');
+                        } else {
+                            Swal.fire({
+                                title: "Atenção!",
+                                text: "Não encontramos nenhuma informação do Cliete!",
+                                timer: 3000,
+                                timerProgressBar: true,
+                                icon: "error",
+                                showConfirmButton: false
+                            });
+
+                            $('#resultado').removeClass('d-none');
+                        }
                     },
                     error: function(xhr, status, error) {
                         Swal.fire({
