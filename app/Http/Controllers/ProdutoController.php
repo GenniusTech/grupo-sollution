@@ -13,4 +13,8 @@ class ProdutoController extends Controller
     public function kannanda($id) {
         return view('franquias.kannanda', ['id' => $id]);
     }
+
+    public function verinha($id) {
+        return view('franquias.verinha', ['id' => $id]);
+    }
 }

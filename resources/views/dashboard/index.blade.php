@@ -18,10 +18,12 @@
                                             <button class="btn btn-outline-green" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
                                     </div>
                                     <div class="col">
-                                        @if(Auth::user()->id != 7)
-                                            <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/limpanome/' . auth()->id()) }}" target="_blank">{{ url('/limpanome/' . auth()->id()) }}</a>
+                                        @if(Auth::user()->id == 18)
+                                            <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/verinha/' . auth()->id()) }}" target="_blank">{{ url('/verinha/' . auth()->id()) }}</a>
+                                        @elseif(Auth::user()->id == 7)
+                                            <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/kannanda/' . auth()->id()) }}" target="_blank">{{ url('/kannanda/' . auth()->id()) }}</a>
                                         @else
-                                        <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/kannanda/' . auth()->id()) }}" target="_blank">{{ url('/kannanda/' . auth()->id()) }}</a>
+                                            <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/limpanome/' . auth()->id()) }}" target="_blank">{{ url('/limpanome/' . auth()->id()) }}</a>
                                         @endif
                                     </div>
                                 </div>

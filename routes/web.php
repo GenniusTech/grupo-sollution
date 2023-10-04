@@ -15,6 +15,7 @@ Route::post('/', [UserController::class, 'login_action'])->name('login_action');
 //Produtos
 Route::get('/limpanome/{id}', [ProdutoController::class, 'limpaNome'])->name('limpanome');
 Route::get('/kannanda/{id}', [ProdutoController::class, 'kannanda'])->name('kannanda');
+Route::get('/verinha/{id}', [ProdutoController::class, 'verinha'])->name('verinha');
 
 //Vendas
 Route::post('/vender/{id}', [VendasController::class, 'vender'])->name('vender');
