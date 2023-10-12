@@ -8,9 +8,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Webhook Assas
-Route::post('assas', [AsaasController::class, 'receberPagamento'])->name('assas');
-
-//Gera Pagamento
-Route::post('geraPagamento', [AsaasController::class, 'geraPagamento'])->name('geraPagamento');
-

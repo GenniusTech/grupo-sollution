@@ -3,7 +3,7 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Usuários Do Sistema</h1>
+            <h1 class="h3 mb-0 text-gray-800">Listas</h1>
         </div>
 
         <div class="row">
@@ -13,51 +13,46 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    <button class="btn btn-outline-success mb-3" type="button" data-toggle="modal" data-target="#exampleModal">Cadastrar</button>
+                                    @if(Auth::user()->tipo == 1) <button class="btn btn-outline-success mb-3" type="button" data-toggle="modal" data-target="#exampleModal">Cadastrar</button> @endif
 
-                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="modalLista" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <form method="POST" action="{{ route('cadastraUsuario') }}">
+                                                <form method="POST" action="{{ route('cadastraLista') }}">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Cadastro de Usuário</h5>
+                                                        <h5 class="modal-title" id="modalLista">Cadastro de Listas</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <input type="hidden" value={{  csrf_token() }} name="_token">
                                                         <div class="row">
-                                                            <div class="col-6">
+                                                            <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <input type="text" class="form-control" name="nome" placeholder="Nome">
+                                                                    <input type="text" class="form-control" name="titulo" placeholder="Título">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" name="descricao" placeholder="Descrição">
                                                                 </div>
                                                             </div>
                                                             <div class="col-6">
                                                                 <div class="form-group">
-                                                                    <input type="number" class="form-control" name="cpfcnpj" placeholder="CPF">
+                                                                    <input type="date" class="form-control" name="inicio">
                                                                 </div>
                                                             </div>
                                                             <div class="col-6">
                                                                 <div class="form-group">
-                                                                    <input type="email" class="form-control" name="email" placeholder="Email">
+                                                                    <input type="date" class="form-control" name="fim">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-6">
+                                                            <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <input type="password" class="form-control" name="password" placeholder="Senha">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="form-group">
-                                                                    <select class="form-control"  name="tipo">
-                                                                        <option>Tipo</option>
-                                                                        @if (Auth::user()->tipo == 1) <option value="3">Administrador</option> @endif
-                                                                        <option value="2">Parceiro</option>
+                                                                    <select class="form-control" name="status">
+                                                                        <option>Status</option>
+                                                                        <option value="1">Aberta</option>
+                                                                        <option value="2">Fechada</option>
                                                                     </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="form-group">
-                                                                    <input type="number" class="form-control" name="valor_limpa_nome" placeholder="Valor Limpa Nome">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -73,94 +68,76 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-                                @if (session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
                                 <div class="table-responsive">
                                     <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
-                                                <th>Nome</th>
-                                                <th>CPF/CNPJ</th>
-                                                <th>Email</th>
-                                                <th>Tipo</th>
+                                                <th>Título</th>
+                                                <th>Descrição</th>
+                                                <th>Status</th>
+                                                <th>Início</th>
+                                                <th>Fim</th>
                                                 <th class="text-center">Opções</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($usuarios as $key =>$usuario)
+                                            @foreach ($listas as $key =>$lista)
                                             <tr>
-                                                <td>{{ $usuario->id }}</td>
-                                                <td>{{ $usuario->nome }}</td>
-                                                <td>{{ $usuario->cpfcnpj }}</td>
-                                                <td>{{ $usuario->email }}</td>
-                                                <td>
-                                                    @if($usuario->tipo == 1)
-                                                        Administrador
-                                                    @else
-                                                        Associado
-                                                    @endif
-                                                </td>
+                                                <td>{{ $lista->titulo }}</td>
+                                                <td>{{ $lista->descricao }}</td>
+                                                <td>@if($lista->status == 1) Aberta @else Fechada @endif</td>
+                                                <td>{{ date('d/m/Y', strtotime($lista->inicio)) }}</td>
+                                                <td>{{ date('d/m/Y', strtotime($lista->fim)) }}</td>
                                                 <td class="text-center">
-                                                    <form action="{{ route('excluiUsuario') }}" method="POST">
+                                                    <form action="{{ route('excluiLista') }}" method="POST">
                                                         <input type="hidden" value={{  csrf_token() }} name="_token">
-                                                        <input type="hidden" value="{{ $usuario->id }}" name="id">
-                                                        <button class="btn btn-outline-danger" type="submit">Excluir</button>
-                                                        <button class="btn btn-outline-warning" type="button" data-toggle="modal" data-target="#modalUsuario{{ $usuario->id }}">Editar</button>
+                                                        <input type="hidden" value="{{ $lista->id }}" name="id">
+                                                        @if(Auth::user()->tipo == 1)
+                                                            <button class="btn btn-outline-danger" type="submit">Excluir</button>
+                                                            <button class="btn btn-outline-warning" type="button" data-toggle="modal" data-target="#modalLista{{ $lista->id }}">Editar</button>
+                                                        @endif
+                                                        <a class="btn btn-outline-success" href="{{ route('listaDetalhe', ['id' => $lista->id]) }}">Ver</a>
                                                     </form>
                                                 </td>
                                             </tr>
-
-                                            <div class="modal fade" id="modalUsuario{{ $usuario->id }}" tabindex="-1" role="dialog" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+                                            <div class="modal fade" id="modalLista{{ $lista->id }}" tabindex="-1" role="dialog" aria-labelledby="modalLista" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
-                                                        <form method="POST" action="{{ route('atualizaUsuario') }}">
+                                                        <form method="POST" action="{{ route('atualizaLista') }}">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="modalUsuarioLabel">Edição de Usuário</h5>
+                                                                <h5 class="modal-title" id="modalLista">Atualização de Listas</h5>
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <input type="hidden" value={{  csrf_token() }} name="_token">
-                                                                <input type="hidden" value="{{ $usuario->id }}" name="id">
+                                                                <input type="hidden" value="{{ $lista->id }}" name="id">
                                                                 <div class="row">
-                                                                    <div class="col-6">
+                                                                    <div class="col-12">
                                                                         <div class="form-group">
-                                                                            <input type="text" class="form-control" name="nome" placeholder="Nome" value="{{ $usuario->nome }}">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <input type="number" class="form-control" name="cpf" placeholder="CPF" value="{{ $usuario->cpfcnpj }}">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <input type="email" class="form-control" name="email" placeholder="Email" value="{{ $usuario->email }}">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <input type="password" class="form-control" name="password" placeholder="Senha">
+                                                                            <input type="text" class="form-control" name="titulo" placeholder="Título" value="{{ $lista->titulo }}">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <div class="form-group">
-                                                                            <select class="form-control"  name="tipo">
-                                                                                <option value="">Tipo</option>
-                                                                                @if (Auth::user()->tipo == 1) <option value="1">Administrador</option> @endif
-                                                                                <option value="2">Parceiro</option>
+                                                                            <input type="text" class="form-control" name="descricao" placeholder="Descrição" value="{{ $lista->descricao }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="form-group">
+                                                                            <input type="date" class="form-control" name="inicio" value="{{ $lista->inicio }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="form-group">
+                                                                            <input type="date" class="form-control" name="fim" value="{{ $lista->fim }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12">
+                                                                        <div class="form-group">
+                                                                            <select class="form-control" name="status">
+                                                                                <option>Status</option>
+                                                                                <option value="1">Aberta</option>
+                                                                                <option value="2">Fechada</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -168,7 +145,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-                                                                <button type="submit" class="btn btn-success">Editar</button>
+                                                                <button type="submit" class="btn btn-success">Atualizar</button>
                                                             </div>
                                                         </form>
                                                     </div>

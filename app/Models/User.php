@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,10 +17,12 @@ class User extends Authenticatable
 
     protected $fillable = [
         'nome',
-        'cpf',
+        'cpfcnpj',
         'email',
         'password',
         'tipo',
+        'valor_limpa_nome',
+        'id_criador',
         'created_at',
         'updated_at',
     ];

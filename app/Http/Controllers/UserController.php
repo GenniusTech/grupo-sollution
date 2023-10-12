@@ -43,6 +43,10 @@ class UserController extends Controller
             $user->nome = $request->input('nome');
         }
 
+        if ($request->filled('cpfcnpj')) {
+            $user->cpfcnpj = preg_replace('/[^0-9]/', '', $request->input('cpfcnpj'));
+        }
+
         if ($request->filled('email')) {
             $user->email = $request->input('email');
         }
@@ -51,56 +55,87 @@ class UserController extends Controller
             $user->password = Hash::make($request->input('password'));
         }
 
-        if ($request->filled('chave_pix')) {
-            $user->chave_pix = $request->input('chave_pix');
-        }
-
         $user->save();
 
         return redirect()->back()->with('success', 'Perfil atualizado com sucesso.');
     }
 
-    public function usuario()
-    {
-        $user = Auth::user();
-        $usuarios = User::where('id_patrocinador', $user->id);
+    public function usuario() {
+        $usuarios = User::all();
 
         return view('dashboard.gestao.usuario', [
-            'usuarios' => $user->tipo != 1 ? $usuarios->get() : User::all(),
+            'usuarios' => $usuarios,
         ]);
     }
 
-    public function action_usuario(Request $request)
-    {
+    public function cadastraUsuario(Request $request) {
         $patrociador = Auth::user();
 
         $validatedData = $request->validate([
             'nome' => 'required|string|max:255',
-            'cpf' => 'required|unique:users',
+            'cpfcnpj' => 'required|unique:users',
             'email' => 'required|unique:users',
             'password' => 'required|min:6',
             'tipo' => 'required',
-            'comissao' => 'required|numeric|max:'.$patrociador->comissao,
-            'chave_pix' => 'required',
+            'valor' => 'required',
         ], [
-            'cpf.unique' => 'CPF já está em uso.',
+            'cpfcnpj.unique' => 'CPF/CNPJ já está em uso.',
             'email.unique' => 'Email já está em uso.',
             'password.min' => 'A senha deve ter pelo menos 6 caracteres.',
-            'comissao.max' => 'O valor da Comissão não pode ser maior do que o seu valor de Comissão: ' . number_format($patrociador->comissao, 2, ',', '.'),
         ]);
 
         $user = new User();
         $user->nome = $validatedData['nome'];
-        $user->cpf = $validatedData['cpf'];
+        $user->cpfcnpj = $validatedData['cpfcnpj'];
         $user->email = $validatedData['email'];
         $user->password = bcrypt($validatedData['password']);
         $user->tipo = $validatedData['tipo'];
-        $user->comissao = $validatedData['comissao'];
-        $user->chave_pix = $validatedData['chave_pix'];
-        $user->saldo = 0;
-        $user->id_patrocinador = $patrociador->id;
+        $user->valor_limpa_nome = $validatedData['valor_limpa_nome'];
+        $user->id_criador = $patrociador;
         $user->save();
 
         return redirect()->back()->with('success', 'Usuário cadastrado com sucesso!');
+    }
+
+    public function atualizaUsuario(Request $request) {
+        $usuario = User::where('id', $request->id)->first();
+
+        if($usuario) {
+            if ($request->filled('nome')) {
+                $usuario->nome = $request->input('nome');
+            }
+
+            if ($request->filled('email')) {
+                $usuario->email = $request->input('email');
+            }
+
+            if ($request->filled('password')) {
+                $usuario->password = Hash::make($request->input('password'));
+            }
+
+            if ($request->filled('tipo')) {
+                $usuario->tipo = $request->input('tipo');
+            }
+
+            if ($request->filled('valor_limpa_nome')) {
+                $usuario->valor_limpa_nome = $request->input('valor_limpa_nome');
+            }
+
+            $usuario->save();
+            return redirect()->back()->with('success', 'Usuário atualizado com sucesso!');
+        } else {
+            return redirect()->back()->with('error', 'Usuário não encontrado!');
+        }
+    }
+
+    public function excluiUsuario(Request $request) {
+        $usuario = User::where('id', $request->id)->first();
+
+        if($usuario) {
+            $usuario->delete();
+            return redirect()->back()->with('success', 'Usuário excluído com sucesso!');
+        }
+
+        return redirect()->back()->with('error', 'Usuário não encontrado!');
     }
 }

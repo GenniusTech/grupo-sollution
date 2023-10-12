@@ -8,26 +8,21 @@ use Illuminate\Support\Facades\Storage;
 
 
 use App\Models\Marketing;
-use App\Models\Notificacao;
 
 class MarketingController extends Controller
 {
     public function marketing($id) {
-
         $materiais = Marketing::where('id_produto', $id)->get();
         return view('dashboard.vendas.marketing', [
             'materiais' => $materiais,
         ]);
-
     }
 
     public function materiais() {
-
         $materiais = Marketing::all();
         return view('dashboard.mkt.materiais', [
             'materiais' => $materiais,
         ]);
-
     }
 
     public function action_materiais(Request $request) {
@@ -39,14 +34,14 @@ class MarketingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->back()->with('error', 'Preencha os dados!');
         }
 
         $arquivoUrl = null;
 
         if ($request->hasFile('arquivo')) {
             $validator = Validator::make($request->all(), [
-                'arquivo' => 'file|max:2048', // Exemplo: tamanho máximo de 2MB
+                'arquivo' => 'file|max:2048',
             ]);
 
             if ($validator->fails()) {
@@ -92,59 +87,6 @@ class MarketingController extends Controller
             return redirect()->back()->with('success', 'Sucesso! Material excluido!');
         } else {
             return redirect()->back()->with('error', 'Material não encontrado.');
-        }
-    }
-
-    public function notificacoes() {
-
-        $notificacoes = Notificacao::all();
-        return view('dashboard.mkt.notificacoes', [
-            'notificacoes' => $notificacoes,
-        ]);
-
-    }
-
-    public function action_notificacoes(Request $request) {
-
-        $validator = Validator::make($request->all(), [
-            'titulo' => 'required',
-            'mensagem' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $user = auth()->user();
-
-        Notificacao::create([
-            'titulo'    => $request->input('titulo'),
-            'mensagem'  => $request->input('mensagem'),
-            'id_user'   => $user->id,
-        ]);
-
-        return redirect()->back()->with('success', 'Sucesso! Mensagem cadastrada!');
-    }
-
-    public function notificacoes_delete(Request $request) {
-
-        $validator = Validator::make($request->all(), [
-            'id' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $id = $request->input('id');
-        $notificacao = Notificacao::find($id);
-
-        if ($notificacao) {
-            $notificacao->delete();
-
-            return redirect()->back()->with('success', 'Sucesso! Mensagem excluido!');
-        } else {
-            return redirect()->back()->with('error', 'Mensagem não encontrado.');
         }
     }
 }

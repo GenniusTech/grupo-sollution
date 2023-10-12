@@ -11,14 +11,12 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('cpf')->unique();
+            $table->string('cpfcnpj')->unique();
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('tipo');
-            $table->integer('comissao');
-            $table->integer('saldo');
-            $table->integer('id_patrocinador');
-            $table->string('chave_pix');
+            $table->integer('id_criador')->nullable();
+            $table->decimal('valor_limpa_nome', 10, 2);
             $table->timestamps();
         });
     }

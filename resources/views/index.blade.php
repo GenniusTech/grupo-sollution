@@ -12,32 +12,24 @@
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">
-                                            Acesso para colaboradores.
-                                            <p class="p-min">Caso tenha alguma dúvida ou problema, <a
-                                                    href="https://meucontatoai.com//hefesto">fale com o suporte!</a></p>
+                                            Acesso Para Parceiros.
+                                            <p class="p-min">Bem-vindo(a)!</p>
                                         </h1>
                                     </div>
                                     <form class="user" method="POST" action="{{ route('login_action') }}">
                                         <input type="hidden" value={{ csrf_token() }} name="_token">
-
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" name="email"
-                                                placeholder="Email">
+                                            <input type="text" class="form-control form-control-user" name="email" placeholder="Email">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user" name="password"
-                                                placeholder="Senha">
+                                            <input type="password" class="form-control form-control-user" name="password" placeholder="Senha">
                                         </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Lembrar login</label>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Login
-                                        </button>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block"> Login </button>
                                     </form>
+                                    <hr class="sidebar-divider">
+                                    <div class="text-center">
+                                        V 0.0.1
+                                    </div>
                                 </div>
                             </div>
                         </div>

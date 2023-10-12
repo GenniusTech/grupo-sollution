@@ -22,19 +22,16 @@
                                         <input type="text" class="form-control form-control-user" name="nome" value="{{ $dados->nome }}" placeholder="Nome">
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-6">
-                                        <input type="text" class="form-control form-control-user" name="chave_pix" value="{{ $dados->chave_pix }}" placeholder="Chave Pix">
+                                        <input type="text" class="form-control form-control-user" name="cpfcnpj" value="{{ $dados->cpfcnpj }}" placeholder="CPF/CNPJ">
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-6">
                                         <input type="text" class="form-control form-control-user" name="email" value="{{ $dados->email }}" placeholder="Email">
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-6">
-                                        <input type="password" class="form-control form-control-user" name="password" placeholder="*************">
+                                        <input type="password" class="form-control form-control-user" name="password" placeholder="Senha">
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-user btn-block"> Atualizar
-                                            </button>
-                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block"> Atualizar </button>
                                     </div>
 
                                 </div>

@@ -3,7 +3,7 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Materiais/Marketing</h1>
+            <h1 class="h3 mb-0 text-gray-800">Documentos de Apoio</h1>
         </div>
 
         <div class="row">
@@ -12,20 +12,6 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-                                @if (session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
                                 <div class="table-responsive">
                                     <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
