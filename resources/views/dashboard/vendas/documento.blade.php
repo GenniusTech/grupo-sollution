@@ -109,8 +109,14 @@
 
     <script>
         function geraConsulta() {
-            let url = 'https://consulta.gruposollution.com.br/painel/dashboard/consulta/consulta_2/final.php?lista=' + {{ $nome->cpfcnpj }} + '|NVdOaUFFRkZyZlNEUE1uSnk2VUtiZEhSd0R3OVgzVXRDN2ZTPUJ3dS01aXFvP2dTUWwyd2VJNnE9RFVUaVJHM3JSWVoyODI4YUpicG5pVU0yVlNlcHNDPzlWMEZLZ090WGZyYXpONGhuZVpvdTBEeXk4ZjZJSVpPWUsvUkE4alk5ajM3eFliOFZGcHpNNjRxbVJRMzRVa3QyVnlMYUhoSC1jTE82UFAxV1MySmE9ZGMwdVkxP0tsZnpxNDdVRnljQjlJS1kxQnpla3UxSjYzYnpzR3FHT3ZXanV5QWgvNWxWbWluVzVhWFEhdGdneURWbGUvTXdXV0JhaXJrNlQ1ag==|cGhzbG9mYzpKb3JnZTAxMDEu';
-            window.open(url, '_blank');
+            let cnpfcnpj = {{$nome->cpfcnpj}};
+            if(cnpfcnpj.length > 12) {
+                let url = 'https://consulta.gruposollution.com.br/painel/dashboard/consulta/consulta_2/final.php?lista=' + {{ $nome->cpfcnpj }} + '|NVdOaUFFRkZyZlNEUE1uSnk2VUtiZEhSd0R3OVgzVXRDN2ZTPUJ3dS01aXFvP2dTUWwyd2VJNnE9RFVUaVJHM3JSWVoyODI4YUpicG5pVU0yVlNlcHNDPzlWMEZLZ090WGZyYXpONGhuZVpvdTBEeXk4ZjZJSVpPWUsvUkE4alk5ajM3eFliOFZGcHpNNjRxbVJRMzRVa3QyVnlMYUhoSC1jTE82UFAxV1MySmE9ZGMwdVkxP0tsZnpxNDdVRnljQjlJS1kxQnpla3UxSjYzYnpzR3FHT3ZXanV5QWgvNWxWbWluVzVhWFEhdGdneURWbGUvTXdXV0JhaXJrNlQ1ag==|cGhzbG9mYzpKb3JnZTAxMDEu';
+                window.open(url, '_blank');
+            } else {
+                let url = 'https://consulta.gruposollution.com.br/painel/dashboard/consulta/consulta_5/final.php?lista=' + {{ $nome->cpfcnpj }} + '|NVdOaUFFRkZyZlNEUE1uSnk2VUtiZEhSd0R3OVgzVXRDN2ZTPUJ3dS01aXFvP2dTUWwyd2VJNnE9RFVUaVJHM3JSWVoyODI4YUpicG5pVU0yVlNlcHNDPzlWMEZLZ090WGZyYXpONGhuZVpvdTBEeXk4ZjZJSVpPWUsvUkE4alk5ajM3eFliOFZGcHpNNjRxbVJRMzRVa3QyVnlMYUhoSC1jTE82UFAxV1MySmE9ZGMwdVkxP0tsZnpxNDdVRnljQjlJS1kxQnpla3UxSjYzYnpzR3FHT3ZXanV5QWgvNWxWbWluVzVhWFEhdGdneURWbGUvTXdXV0JhaXJrNlQ1ag==|cGhzbG9mYzpKb3JnZTAxMDEu';
+                window.open(url, '_blank');
+            }
         }
     </script>
 

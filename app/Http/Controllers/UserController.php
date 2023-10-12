@@ -77,7 +77,7 @@ class UserController extends Controller
             'email' => 'required|unique:users',
             'password' => 'required|min:6',
             'tipo' => 'required',
-            'valor' => 'required',
+            'valor_limpa_nome' => 'required',
         ], [
             'cpfcnpj.unique' => 'CPF/CNPJ já está em uso.',
             'email.unique' => 'Email já está em uso.',
@@ -91,7 +91,7 @@ class UserController extends Controller
         $user->password = bcrypt($validatedData['password']);
         $user->tipo = $validatedData['tipo'];
         $user->valor_limpa_nome = $validatedData['valor_limpa_nome'];
-        $user->id_criador = $patrociador;
+        $user->id_criador = $patrociador->id;
         $user->save();
 
         return redirect()->back()->with('success', 'Usuário cadastrado com sucesso!');

@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('cpfcnpj');
             $table->string('whatsapp')->nullable();
             $table->string('email')->nullable();
+            $table->integer('situacao')->nullable();
             $table->unsignedBigInteger('id_produto');
             $table->unsignedBigInteger('id_vendedor');
             $table->unsignedBigInteger('id_lista');

@@ -12,6 +12,7 @@ return new class extends Migration
             $table->string('titulo');
             $table->string('descricao');
             $table->integer('status');
+            $table->integer('situacao')->nullable();
             $table->date('inicio');
             $table->date('fim');
             $table->timestamps();

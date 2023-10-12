@@ -19,16 +19,26 @@
                                     <form class="user" method="POST" action="{{ route('login_action') }}">
                                         <input type="hidden" value={{ csrf_token() }} name="_token">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" name="email" placeholder="Email">
+                                            <input type="text" class="form-control form-control-user" name="email"
+                                                placeholder="Email">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user" name="password" placeholder="Senha">
+                                            <div class="input-group">
+                                                <input type="password" class="form-control form-control-user"
+                                                    name="password" id="password" placeholder="Senha">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="password-toggle"
+                                                        onclick="togglePasswordVisibility()">
+                                                        <i class="fa fa-eye" id="eye-icon"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block"> Login </button>
                                     </form>
                                     <hr class="sidebar-divider">
                                     <div class="text-center">
-                                        V 0.0.1
+                                        <small>V 0.0.1</small>
                                     </div>
                                 </div>
                             </div>
@@ -39,4 +49,21 @@
 
         </div>
     </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById("password");
+            var eyeIcon = document.getElementById("eye-icon");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeIcon.classList.remove("fa-eye");
+                eyeIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                eyeIcon.classList.remove("fa-eye-slash");
+                eyeIcon.classList.add("fa-eye");
+            }
+        }
+    </script>
 @endsection

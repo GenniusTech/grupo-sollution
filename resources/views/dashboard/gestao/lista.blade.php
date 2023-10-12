@@ -93,10 +93,10 @@
                                                         <input type="hidden" value={{  csrf_token() }} name="_token">
                                                         <input type="hidden" value="{{ $lista->id }}" name="id">
                                                         @if(Auth::user()->tipo == 1)
-                                                            <button class="btn btn-outline-danger" type="submit">Excluir</button>
-                                                            <button class="btn btn-outline-warning" type="button" data-toggle="modal" data-target="#modalLista{{ $lista->id }}">Editar</button>
+                                                            <button class="btn btn-outline-danger" type="submit"><i class="fa fa-trash"></i></button>
+                                                            <button class="btn btn-outline-warning" type="button" data-toggle="modal" data-target="#modalLista{{ $lista->id }}"><i class="fa fa-pencil"></i></button>
                                                         @endif
-                                                        <a class="btn btn-outline-success" href="{{ route('listaDetalhe', ['id' => $lista->id]) }}">Ver</a>
+                                                        <a class="btn btn-outline-success" href="{{ route('listaDetalhe', ['id' => $lista->id]) }}"><i class="fa fa-eye"></i></a>
                                                     </form>
                                                 </td>
                                             </tr>
