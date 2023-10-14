@@ -109,14 +109,14 @@
             var cpfCnpj = $('#cpf').val();
             $('#resultado').addClass('d-none');
 
-            // Swal.fire({
-            //     title: "Atenção!",
-            //     text: "Aguarde enquanto buscamos os dados!",
-            //     timer: 5000,
-            //     timerProgressBar: true,
-            //     icon: "info",
-            //     showConfirmButton: false
-            // });
+            Swal.fire({
+                title: "Atenção!",
+                text: "Aguarde enquanto buscamos os dados!",
+                timer: 5000,
+                timerProgressBar: true,
+                icon: "info",
+                showConfirmButton: false
+            });
 
             $.ajax({
                 url: '{{ route('consultar') }}',
@@ -125,7 +125,30 @@
                     cpfCnpj: cpfCnpj,
                 },
                 success: function(data) {
-                    console.log(data);
+                    $('#resultado').removeClass('d-none');
+                    console.log(cpfCnpj.length);
+                    if(cpfCnpj.length < 12) {
+                        var dataCompleta = data.NASC;
+                        var dataPartes = dataCompleta.split(' ');
+                        var dataNasc = dataPartes[0];
+
+                        var dataFormatada = new Date(dataNasc);
+                        var dia = dataFormatada.getDate();
+                        var mes = dataFormatada.getMonth() + 1;
+                        var ano = dataFormatada.getFullYear();
+                        var dataFormatadaString = dia + '-' + mes + '-' + ano;
+
+                        $('input[name=nome]').val(data.NOME);
+                        $('input[name=cpfcnpj]').val(data.CPF);
+                        $('input[name=dataNascimento]').val(dataFormatadaString);
+                        $('input[name=whatsapp]').val(data.CONTATOS_ID);
+                    } else {
+                        $('input[name=nome]').val(data.razao_social);
+                        $('input[name=cpfcnpj]').val(data.cnpj);
+                        $('input[name=dataNascimento]').val(data.data_inicio_ativ);
+                        $('input[name=whatsapp]').val(data.telefone_1);
+                    }
+
                 },
                 error: function(xhr, status, error) {
                     console.log(data);

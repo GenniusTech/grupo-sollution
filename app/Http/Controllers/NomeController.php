@@ -162,9 +162,8 @@ class NomeController extends Controller
     public function consulta(Request $request) {
         $cpfCnpj = $request->cpfCnpj;
 
-        // Configuração do cliente do Guzzle
         $client = new Client([
-            'verify' => false, // Desativa a verificação do certificado SSL
+            'verify' => false,
         ]);
 
         try {
