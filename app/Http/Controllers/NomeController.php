@@ -10,6 +10,7 @@ use App\Models\Nome;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Jurosh\PDFMerge\PDFMerger;
+use GuzzleHttp\Client;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -154,5 +155,20 @@ class NomeController extends Controller
         }
 
         return $vendaData;
+    }
+
+    public function consulta(Request $request) {
+        $cpfCnpj = $request->cpfcnpj;
+
+        $client = new Client();
+
+        if (strlen($cpfCnpj) > 12) {
+            $response = $client->get('https://hyb.com.br/curl_cnpj.php?action=acessa_curl&cnpj=' . $cpfCnpj);
+        } else {
+            $response = $client->get('https://api.bronxservices.net/consulta/cGhzbG9mYzpKb3JnZTAxMDEu/serasa/cpf/' . $cpfCnpj);
+        }
+
+        $data = json_decode($response->getBody(), true);
+        return response()->json($data);
     }
 }

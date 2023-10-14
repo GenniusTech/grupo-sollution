@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\AsaasController;
+use App\Http\Controllers\NomeController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -8,3 +9,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/consultar', [NomeController::class, 'consulta'])->name('consultar');
