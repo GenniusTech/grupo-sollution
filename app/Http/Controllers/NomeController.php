@@ -11,6 +11,8 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Jurosh\PDFMerge\PDFMerger;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -160,16 +162,21 @@ class NomeController extends Controller
     public function consulta(Request $request) {
         $cpfCnpj = $request->cpfCnpj;
 
-        $client = new Client();
+        // Configuração do cliente do Guzzle
+        $client = new Client([
+            'verify' => false, // Desativa a verificação do certificado SSL
+        ]);
 
-        if (strlen($cpfCnpj) > 12) {
-            $response = $client->get('https://hyb.com.br/curl_cnpj.php?action=acessa_curl&cnpj=' . $cpfCnpj);
-        } else {
-            $response = $client->get('https://api.bronxservices.net/consulta/cGhzbG9mYzpKb3JnZTAxMDEu/serasa/cpf/' . $cpfCnpj);
+        try {
+            if (strlen($cpfCnpj) > 12) {
+                $response = $client->get('https://hyb.com.br/curl_cnpj.php?action=acessa_curl&cnpj=' . $cpfCnpj);
+            } else {
+                $response = $client->get('https://api.bronxservices.net/consulta/cGhzbG9mYzpKb3JnZTAxMDEu/serasa/cpf/' . $cpfCnpj);
+            }
+            $data = json_decode($response->getBody(), true);
+            return response()->json($data);
+        } catch (GuzzleException $e) {
+            return response()->json(['message' => 'Erro na solicitação'], 500);
         }
-
-        var_dump($response);
-        // $data = json_decode($response->getBody(), true);
-        // return response()->json($data);
     }
 }
