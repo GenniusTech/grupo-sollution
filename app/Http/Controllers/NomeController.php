@@ -12,7 +12,6 @@ use Dompdf\Options;
 use Jurosh\PDFMerge\PDFMerger;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\RequestOptions;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;

@@ -48,11 +48,13 @@ class ListaController extends Controller
             $totalNomes = $cpfs + $cnpjs;
 
             $usuariosTotais[] = [
+                'id' => $usuario->id,
                 'nome' => $usuario->nome,
                 'cpfcnpj' => $usuario->cpfcnpj,
                 'totalCnpjs' => $cnpjs,
                 'totalCpfs' => $cpfs,
                 'totalNomes' => $totalNomes,
+                'totalFinal' => $totalNomes * $usuario->valor_limpa_nome
             ];
         }
 

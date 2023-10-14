@@ -5,6 +5,7 @@ use App\Http\Controllers\ListaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NomeController;
 use App\Http\Controllers\MarketingController;
+use App\Http\Controllers\RelatorioController;
 use Illuminate\Support\Facades\Route;
 
 //Login
