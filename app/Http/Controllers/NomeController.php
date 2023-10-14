@@ -162,13 +162,13 @@ class NomeController extends Controller
 
         $client = new Client();
 
-        if (strlen($cpfCnpj) > 12) {
-            $response = $client->get('https://hyb.com.br/curl_cnpj.php?action=acessa_curl&cnpj=' . $cpfCnpj);
-        } else {
-            $response = $client->get('https://api.bronxservices.net/consulta/cGhzbG9mYzpKb3JnZTAxMDEu/serasa/cpf/' . $cpfCnpj);
-        }
+        // if (strlen($cpfCnpj) > 12) {
+        //     $response = $client->get('https://hyb.com.br/curl_cnpj.php?action=acessa_curl&cnpj=' . $cpfCnpj);
+        // } else {
+        //     $response = $client->get('https://api.bronxservices.net/consulta/cGhzbG9mYzpKb3JnZTAxMDEu/serasa/cpf/' . $cpfCnpj);
+        // }
 
-        var_dump($response);
+        var_dump($cpfCnpj);
         // $data = json_decode($response->getBody(), true);
         // return response()->json($data);
     }

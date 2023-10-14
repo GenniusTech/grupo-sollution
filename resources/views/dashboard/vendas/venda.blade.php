@@ -109,14 +109,14 @@
             var cpfCnpj = $('#cpf').val();
             $('#resultado').addClass('d-none');
 
-            Swal.fire({
-                title: "Atenção!",
-                text: "Aguarde enquanto buscamos os dados!",
-                timer: 5000,
-                timerProgressBar: true,
-                icon: "info",
-                showConfirmButton: false
-            });
+            // Swal.fire({
+            //     title: "Atenção!",
+            //     text: "Aguarde enquanto buscamos os dados!",
+            //     timer: 5000,
+            //     timerProgressBar: true,
+            //     icon: "info",
+            //     showConfirmButton: false
+            // });
 
             $.ajax({
                 url: '{{ route('consultar') }}',
