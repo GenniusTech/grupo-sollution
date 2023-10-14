@@ -158,9 +158,9 @@ class NomeController extends Controller
     }
 
     public function consulta(Request $request) {
-        $cpfCnpj = $request->cpfcnpj;
+        // $cpfCnpj = $request->cpfcnpj;
 
-        $client = new Client();
+        // $client = new Client();
 
         // if (strlen($cpfCnpj) > 12) {
         //     $response = $client->get('https://hyb.com.br/curl_cnpj.php?action=acessa_curl&cnpj=' . $cpfCnpj);
@@ -168,7 +168,7 @@ class NomeController extends Controller
         //     $response = $client->get('https://api.bronxservices.net/consulta/cGhzbG9mYzpKb3JnZTAxMDEu/serasa/cpf/' . $cpfCnpj);
         // }
 
-        var_dump($cpfCnpj);
+        var_dump($request);
         // $data = json_decode($response->getBody(), true);
         // return response()->json($data);
     }
