@@ -168,7 +168,8 @@ class NomeController extends Controller
             $response = $client->get('https://api.bronxservices.net/consulta/cGhzbG9mYzpKb3JnZTAxMDEu/serasa/cpf/' . $cpfCnpj);
         }
 
-        $data = json_decode($response->getBody(), true);
-        return response()->json($data);
+        var_dump($response);
+        // $data = json_decode($response->getBody(), true);
+        // return response()->json($data);
     }
 }
