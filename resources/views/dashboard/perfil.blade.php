@@ -13,7 +13,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form class="user" method="POST" action="{{ route('perfil') }}">
+                        <form class="user" method="POST" action="{{ route('atualizaPerfil') }}">
                             <input type="hidden" value={{ csrf_token() }} name="_token">
                             <div class="row">
                                 <div class="col-sm-12 col-lg-8 offset-lg-2 row">

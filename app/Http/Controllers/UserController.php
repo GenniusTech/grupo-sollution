@@ -35,7 +35,7 @@ class UserController extends Controller
         return view('dashboard.perfil', ['dados' => $dados]);
     }
 
-    public function action_perfil(Request $request)
+    public function atualizaPerfil(Request $request)
     {
         $user = Auth::user();
 
