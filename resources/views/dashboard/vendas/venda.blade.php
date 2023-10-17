@@ -84,7 +84,7 @@
                                             <div class="form-group">
                                                 <div class="custom-file">
                                                     <input type="file" class="custom-file-input" id="documento_com_foto"
-                                                        name="documento_com_foto" required>
+                                                        name="documento_com_foto" accept="image/*" required>
                                                     <label class="custom-file-label" for="documento_com_foto">Documento com
                                                         foto (RG ou CNH)</label>
                                                 </div>

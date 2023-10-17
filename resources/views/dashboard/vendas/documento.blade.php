@@ -22,7 +22,7 @@
                                         <div class="form-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="ficha_associativa"
-                                                    name="ficha_associativa" required>
+                                                    name="ficha_associativa" accept="application/pdf" required>
                                                 <label class="custom-file-label" for="ficha_associativa">Ficha Associativa
                                                     (Assinada)</label>
                                             </div>
@@ -32,7 +32,7 @@
                                         <div class="form-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="consulta"
-                                                    name="consulta" required>
+                                                    name="consulta" accept="application/pdf" required>
                                                 <label class="custom-file-label" for="consulta">Consulta</label>
                                             </div>
                                         </div>
@@ -59,7 +59,7 @@
                                         <div class="form-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="ficha_associativa"
-                                                    name="ficha_associativa" required>
+                                                    name="ficha_associativa" accept="application/pdf" required>
                                                 <label class="custom-file-label" for="ficha_associativa">Ficha Associativa
                                                     (Assinada)</label>
                                             </div>
@@ -69,7 +69,7 @@
                                         <div class="form-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="cartao_cnpj"
-                                                    name="cartao_cnpj" required>
+                                                    name="cartao_cnpj" accept="application/pdf" required>
                                                 <label class="custom-file-label" for="cartao_cnpj">Cartão CNPJ</label>
                                             </div>
                                         </div>
@@ -78,7 +78,7 @@
                                         <div class="form-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="consulta"
-                                                    name="consulta" required>
+                                                    name="consulta" accept="application/pdf" required>
                                                 <label class="custom-file-label" for="consulta">Consulta</label>
                                             </div>
                                         </div>
