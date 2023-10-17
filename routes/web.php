@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/marketing/{id}', [MarketingController::class, 'marketing'])->name('marketing');
     Route::get('/materiais', [MarketingController::class, 'materiais'])->name('materiais');
-    Route::post('materiais', [MarketingController::class, 'action_materiais'])->name('materiais');
+    Route::post('cadastraMateriais', [MarketingController::class, 'cadastraMateriais'])->name('cadastraMateriais');
     Route::post('materiais_delete', [MarketingController::class, 'materiais_delete'])->name('materiais_delete');
 
     Route::get('/lista', [ListaController::class, 'lista'])->name('lista');

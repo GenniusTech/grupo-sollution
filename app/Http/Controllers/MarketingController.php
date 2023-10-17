@@ -25,7 +25,7 @@ class MarketingController extends Controller
         ]);
     }
 
-    public function action_materiais(Request $request) {
+    public function cadastraMateriais(Request $request) {
 
         $validator = Validator::make($request->all(), [
             'nome' => 'required',
