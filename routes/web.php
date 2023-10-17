@@ -30,7 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('excluiUsuario', [UserController::class, 'excluiUsuario'])->name('excluiUsuario');
 
     Route::get('/perfil',[UserController::class, 'perfil'])->name('perfil');
-    Route::post('perfil', [UserController::class, 'action_perfil'])->name('perfil');
+    Route::post('/perfil', [UserController::class, 'action_perfil'])->name('perfil');
 
     Route::get('/marketing/{id}', [MarketingController::class, 'marketing'])->name('marketing');
     Route::get('/materiais', [MarketingController::class, 'materiais'])->name('materiais');
