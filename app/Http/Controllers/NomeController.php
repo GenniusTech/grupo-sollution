@@ -47,7 +47,7 @@ class NomeController extends Controller
             $file = $request->file('documento_com_foto');
 
             if ($file->getMimeType() === 'application/pdf') {
-                $pdfPath = $file->store('pdfs', 'public');
+                $pdfPath = $file->store('documentos', 'public');
                 $pdfImages = $this->convertPdfToImages($pdfPath);
                 $base64Image = $this->generatePdfFromImages($pdfImages);
             } else {
