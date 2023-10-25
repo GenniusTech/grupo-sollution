@@ -73,36 +73,25 @@ class NomeController extends Controller
         return view('dashboard.vendas.documento', ['produto' => $request->produto, 'nome' => $venda, 'success' => 'Agora, envie os documentos necessários!']);
     }
 
-    private function convertPdfToImages($pdfPath) {
+    private function convertPdfToImage($pdfPath) {
         if (file_exists($pdfPath)) {
             $imagick = new Imagick();
             $imagick->readImage($pdfPath);
             $imagick->setIteratorIndex(0);
             $image = $imagick->getImage();
 
-            return $image;
+            $outputDirectory = public_path('storage/documentos/');
+            $outputFileName = uniqid() . '.' . $image->getImageFormat();
+            $outputPath = $outputDirectory . $outputFileName;
+
+            $image->writeImage($outputPath);
+
+            return $outputPath;
         }
 
         return null;
     }
 
-    private function generatePdfFromImages($images) {
-        $options = new Options();
-        $options->setIsRemoteEnabled(true);
-
-        $dompdf = new Dompdf($options);
-        $html = '';
-        foreach ($images as $image) {
-            $html .= '<img src="data:image/jpeg;base64,' . base64_encode($image) . '" />';
-        }
-
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $pdfContent = $dompdf->output();
-
-        return $pdfContent;
-    }
 
     private function generatePdfFromView(Request $request, $base64Image) {
         $options = new Options();
