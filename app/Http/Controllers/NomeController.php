@@ -76,7 +76,7 @@ class NomeController extends Controller
     }
 
     private function convertPdfToImages($pdfPath) {
-        $fullPath = public_path('storage/documentos/' . $pdfPath);
+        $fullPath = public_path('documentos/' . $pdfPath);
 
         if (file_exists($fullPath)) {
             $imagick = new Imagick();
