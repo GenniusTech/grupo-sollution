@@ -73,7 +73,7 @@ class NomeController extends Controller
         return view('dashboard.vendas.documento', ['produto' => $request->produto, 'nome' => $venda, 'success' => 'Agora, envie os documentos necessários!']);
     }
 
-    private function convertPdfToImage($pdfPath) {
+    private function convertPdfToImages($pdfPath) {
         if (file_exists($pdfPath)) {
             $imagick = new Imagick();
             $imagick->readImage($pdfPath);
@@ -85,9 +85,6 @@ class NomeController extends Controller
 
         return null;
     }
-
-
-
 
     private function generatePdfFromImages($images) {
         $options = new Options();
