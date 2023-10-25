@@ -195,12 +195,17 @@ class NomeController extends Controller
         return $vendaData;
     }
 
-    function convertPdfToImages($pdfPath)
-    {
+    public function convertPdfToImages($pdfPath) {
         $pdf = new Pdf(storage_path('app/public/' . $pdfPath));
         $pdf->setOutputFormat('jpeg');
         $imagePath = public_path('documentos/');
-        $pdf->saveImage($imagePath);
+
+        if (!is_dir($imagePath)) {
+            mkdir($imagePath, 0755, true);
+        }
+
+        $uniqueFileName = time();
+        $pdf->saveImage($imagePath . $uniqueFileName . '.jpg');
         $images = File::files($imagePath);
 
         return $images;
