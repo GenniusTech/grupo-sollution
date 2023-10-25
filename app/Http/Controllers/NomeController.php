@@ -36,39 +36,45 @@ class NomeController extends Controller
             'dataNascimento'     => 'required|string|max:20',
             'email'              => 'string|max:100',
             'whatsapp'           => 'string|max:20',
-            'documento_com_foto' => 'image'
+            'documento_com_foto' => 'mimes:jpeg,png,jpg,pdf',
         ]);
 
-        $image = $request->file('documento_com_foto');
-        $imageData = file_get_contents($image);
-        $base64Image = base64_encode($imageData);
+        if ($request->hasFile('documento_com_foto')) {
+            $file = $request->file('documento_com_foto');
 
-        $options = new Options();
-        $options->setIsRemoteEnabled(true);
+            if ($file->getMimeType() === 'application/pdf') {
+                $nomeArquivo = 'documento_' . uniqid() . '.pdf';
+                Storage::disk('public')->putFileAs('documentos/', $file, $nomeArquivo);
+            } else {
+                $imageData = file_get_contents($file);
+                $base64Image = base64_encode($imageData);
 
-        $dompdf = new Dompdf($options);
-        $views = ['documento.fichaAssociativa'];
-        $html = '';
+                $options = new Options();
+                $options->setIsRemoteEnabled(true);
 
-        foreach ($views as $view) {
-            $html .= View::make($view, ['data' => $request, 'base64Image' => $base64Image])->render();
+                $dompdf = new Dompdf($options);
+                $views = ['documento.fichaAssociativa'];
+                $html = '';
+
+                foreach ($views as $view) {
+                    $html .= View::make($view, ['data' => $request, 'base64Image' => $base64Image])->render();
+                }
+
+                $dompdf->loadHtml($html);
+                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->render();
+                $pdfContent = $dompdf->output();
+
+                $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
+                file_put_contents($tempFileName, $pdfContent);
+
+                $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
+                Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
+            }
         }
-
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $pdfContent = $dompdf->output();
-
-        $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
-        file_put_contents($tempFileName, $pdfContent);
-
-        $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
-        Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
 
         $ficha_associativa = Storage::url('documentos/' . $nomeArquivo);
         $vendaData = $this->prepareVendaData($request, $request->id_vendedor, $ficha_associativa);
-
-        $venda = Nome::create($vendaData);
 
         // $documentoBase64 = base64_encode(file_get_contents(storage_path('app/' . $nomeArquivo)));
         // $this->enviaFicha($documentoBase64, $venda->whatsapp);
