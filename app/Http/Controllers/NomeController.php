@@ -47,17 +47,14 @@ class NomeController extends Controller
             $file = $request->file('documento_com_foto');
 
             if ($file->getMimeType() === 'application/pdf') {
-                // Se o arquivo for um PDF, converte em imagens
                 $pdfPath = $file->store('pdfs', 'public');
                 $pdfImages = $this->convertPdfToImages($pdfPath);
                 $base64Image = $this->generatePdfFromImages($pdfImages);
             } else {
-                // Se o arquivo for uma imagem, apenas codifica
                 $imageData = file_get_contents($file);
                 $base64Image = base64_encode($imageData);
             }
 
-            // Geração do PDF a partir de uma view
             $pdfContent = $this->generatePdfFromView($request, $base64Image);
 
             $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
@@ -69,10 +66,7 @@ class NomeController extends Controller
             $vendaData['ficha_associativa'] = Storage::url('documentos/' . $nomeArquivo);
         }
 
-        // Preparação dos dados de venda
         $vendaData = array_merge($vendaData, $this->prepareVendaData($request, $request->id_vendedor));
-
-        // Criação de um registro 'Nome'
         $venda = Nome::create($vendaData);
 
         if (!$venda) {
