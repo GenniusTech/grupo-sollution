@@ -77,20 +77,19 @@ class NomeController extends Controller
     }
 
     private function convertPdfToImages($pdfPath) {
-        $fullPath = public_path('storage/documentos/' . $pdfPath);
+        var_dump($pdfPath);
+        // $fullPath = public_path('storage/documentos/' . $pdfPath);
 
-        if (file_exists($fullPath)) {
-            $imagick = new Imagick();
-            $imagick->readImage($fullPath);
-            $images = [];
-            foreach ($imagick as $image) {
-                $images[] = $image;
-            }
+        // if (file_exists($fullPath)) {
+        //     $imagick = new Imagick();
+        //     $imagick->readImage($fullPath);
+        //     $images = [];
+        //     foreach ($imagick as $image) {
+        //         $images[] = $image;
+        //     }
 
-            return $images;
-        }
-
-        return null;
+        //     return $images;
+        // }
     }
 
     private function generatePdfFromImages($images) {
