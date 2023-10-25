@@ -12,7 +12,7 @@ use Dompdf\Options;
 use Jurosh\PDFMerge\PDFMerger;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Spatie\PdfToImage\Pdf;
+use Imagick;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -31,82 +31,48 @@ class NomeController extends Controller
     }
 
     public function cadastraNome(Request $request) {
+        // Validação dos dados de entrada
         $request->validate([
-            'cpfcnpj'            => 'required',
-            'nome'               => 'required|string|max:255',
-            'dataNascimento'     => 'required|string|max:20',
-            'email'              => 'string|max:100',
-            'whatsapp'           => 'string|max:20',
+            'cpfcnpj' => 'required',
+            'nome' => 'required|string|max:255',
+            'dataNascimento' => 'required|string|max:20',
+            'email' => 'string|max:100',
+            'whatsapp' => 'string|max:20',
             'documento_com_foto' => 'mimes:jpeg,png,jpg,pdf',
         ]);
+
+        $vendaData = [];
 
         if ($request->hasFile('documento_com_foto')) {
             $file = $request->file('documento_com_foto');
 
             if ($file->getMimeType() === 'application/pdf') {
+                // Se o arquivo for um PDF, converte em imagens
                 $pdfPath = $file->store('pdfs', 'public');
-
                 $pdfImages = $this->convertPdfToImages($pdfPath);
                 $base64Image = $this->generatePdfFromImages($pdfImages);
-
-                $options = new Options();
-                $options->setIsRemoteEnabled(true);
-
-                $dompdf = new Dompdf($options);
-                $views = ['documento.fichaAssociativa'];
-                $html = '';
-
-                foreach ($views as $view) {
-                    $html .= View::make($view, ['data' => $request, 'base64Image' => $base64Image])->render();
-                }
-
-                $dompdf->loadHtml($html);
-                $dompdf->setPaper('A4', 'portrait');
-                $dompdf->render();
-                $pdfContent = $dompdf->output();
-
-                $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
-                file_put_contents($tempFileName, $pdfContent);
-
-                $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
-                Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
-
-                $ficha_associativa = Storage::url('documentos/' . $nomeArquivo);
-                $vendaData = $this->prepareVendaData($request, $request->id_vendedor, $ficha_associativa);
             } else {
-                $image = $request->file('documento_com_foto');
-                $imageData = file_get_contents($image);
+                // Se o arquivo for uma imagem, apenas codifica
+                $imageData = file_get_contents($file);
                 $base64Image = base64_encode($imageData);
-
-                $options = new Options();
-                $options->setIsRemoteEnabled(true);
-
-                $dompdf = new Dompdf($options);
-                $views = ['documento.fichaAssociativa'];
-                $html = '';
-
-                foreach ($views as $view) {
-                    $html .= View::make($view, ['data' => $request, 'base64Image' => $base64Image])->render();
-                }
-
-                $dompdf->loadHtml($html);
-                $dompdf->setPaper('A4', 'portrait');
-                $dompdf->render();
-                $pdfContent = $dompdf->output();
-
-                $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
-                file_put_contents($tempFileName, $pdfContent);
-
-                $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
-                Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
-
-                $ficha_associativa = Storage::url('documentos/' . $nomeArquivo);
-                $vendaData = $this->prepareVendaData($request, $request->id_vendedor, $ficha_associativa);
             }
-        } else {
-            $vendaData = $this->prepareVendaData($request, $request->id_vendedor);
+
+            // Geração do PDF a partir de uma view
+            $pdfContent = $this->generatePdfFromView($request, $base64Image);
+
+            $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
+            file_put_contents($tempFileName, $pdfContent);
+
+            $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
+            Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
+
+            $vendaData['ficha_associativa'] = Storage::url('documentos/' . $nomeArquivo);
         }
 
+        // Preparação dos dados de venda
+        $vendaData = array_merge($vendaData, $this->prepareVendaData($request, $request->id_vendedor));
+
+        // Criação de um registro 'Nome'
         $venda = Nome::create($vendaData);
 
         if (!$venda) {
@@ -114,6 +80,55 @@ class NomeController extends Controller
         }
 
         return view('dashboard.vendas.documento', ['produto' => $request->produto, 'nome' => $venda, 'success' => 'Agora, envie os documentos necessários!']);
+    }
+
+    private function convertPdfToImages($pdfPath) {
+        $imagick = new Imagick();
+        $imagick->readImage($pdfPath);
+        $images = [];
+        foreach ($imagick as $image) {
+            $images[] = $image;
+        }
+
+        return $images;
+    }
+
+    private function generatePdfFromImages($images) {
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+
+        $dompdf = new Dompdf($options);
+        $html = '';
+        foreach ($images as $image) {
+            $html .= '<img src="data:image/jpeg;base64,' . base64_encode($image) . '" />';
+        }
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $pdfContent = $dompdf->output();
+
+        return $pdfContent;
+    }
+
+    private function generatePdfFromView(Request $request, $base64Image) {
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+
+        $dompdf = new Dompdf($options);
+        $views = ['documento.fichaAssociativa'];
+        $html = '';
+
+        foreach ($views as $view) {
+            $html .= view($view, ['data' => $request, 'base64Image' => $base64Image])->render();
+        }
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $pdfContent = $dompdf->output();
+
+        return $pdfContent;
     }
 
     public function excluiNome(Request $request) {
@@ -193,52 +208,6 @@ class NomeController extends Controller
         }
 
         return $vendaData;
-    }
-
-    public function convertPdfToImages($pdfPath) {
-        $pdf = new Pdf(storage_path('app/public/' . $pdfPath));
-        $pdf->setOutputFormat('jpeg');
-        $imagePath = public_path('documentos/');
-
-        if (!is_dir($imagePath)) {
-            mkdir($imagePath, 0755, true);
-        }
-
-        $uniqueFileName = time();
-        $pdf->saveImage($imagePath . $uniqueFileName . '.jpg');
-        $images = File::files($imagePath);
-
-        return $images;
-    }
-
-    function generatePdfFromImages($images) {
-        $options = new Options();
-        $options->setIsRemoteEnabled(true);
-
-        $dompdf = new Dompdf($options);
-        $views = ['documento.fichaAssociativa'];
-        $html = '';
-
-        foreach ($images as $image) {
-            $html .= '<img src="' . $image . '"><br>';
-        }
-
-        foreach ($views as $view) {
-            $html .= View::make($view)->render();
-        }
-
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $pdfContent = $dompdf->output();
-
-        $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
-        file_put_contents($tempFileName, $pdfContent);
-
-        $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
-        Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
-
-        return Storage::url('documentos/' . $nomeArquivo);
     }
 
     public function consulta(Request $request) {
