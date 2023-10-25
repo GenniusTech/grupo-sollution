@@ -47,7 +47,6 @@ class NomeController extends Controller
 
             if ($file->getMimeType() === 'application/pdf') {
                 $pdfPath = $file->store('documentos', 'public');
-                var_dump($pdfPath);
                 $pdfImages = $this->convertPdfToImages($pdfPath);
                 $base64Image = $this->generatePdfFromImages($pdfImages);
             } else {
@@ -66,18 +65,18 @@ class NomeController extends Controller
             $vendaData['ficha_associativa'] = Storage::url('documentos/' . $nomeArquivo);
         }
 
-        // $vendaData = array_merge($vendaData, $this->prepareVendaData($request, $request->id_vendedor));
-        // $venda = Nome::create($vendaData);
+        $vendaData = array_merge($vendaData, $this->prepareVendaData($request, $request->id_vendedor));
+        $venda = Nome::create($vendaData);
 
-        // if (!$venda) {
-        //     return view('dashboard.vendas.venda', ['produto' => $request->produto, 'error' => 'Não foi possível realizar essa venda, tente novamente mais tarde!']);
-        // }
+        if (!$venda) {
+            return view('dashboard.vendas.venda', ['produto' => $request->produto, 'error' => 'Não foi possível realizar essa venda, tente novamente mais tarde!']);
+        }
 
-        // return view('dashboard.vendas.documento', ['produto' => $request->produto, 'nome' => $venda, 'success' => 'Agora, envie os documentos necessários!']);
+        return view('dashboard.vendas.documento', ['produto' => $request->produto, 'nome' => $venda, 'success' => 'Agora, envie os documentos necessários!']);
     }
 
     private function convertPdfToImages($pdfPath) {
-        $fullPath = public_path('documentos/' . $pdfPath);
+        $fullPath = public_path($pdfPath);
 
         if (file_exists($fullPath)) {
             $imagick = new Imagick();
