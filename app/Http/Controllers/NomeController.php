@@ -12,10 +12,12 @@ use Dompdf\Options;
 use Jurosh\PDFMerge\PDFMerger;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Spatie\PdfToImage\Pdf;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\File;
 
 class NomeController extends Controller
 {
@@ -29,7 +31,6 @@ class NomeController extends Controller
     }
 
     public function cadastraNome(Request $request) {
-
         $request->validate([
             'cpfcnpj'            => 'required',
             'nome'               => 'required|string|max:255',
@@ -43,10 +44,38 @@ class NomeController extends Controller
             $file = $request->file('documento_com_foto');
 
             if ($file->getMimeType() === 'application/pdf') {
-                $nomeArquivo = 'documento_' . uniqid() . '.pdf';
-                Storage::disk('public')->putFileAs('documentos/', $file, $nomeArquivo);
+                $pdfPath = $file->store('pdfs', 'public');
+
+                $pdfImages = $this->convertPdfToImages($pdfPath);
+                $base64Image = $this->generatePdfFromImages($pdfImages);
+
+                $options = new Options();
+                $options->setIsRemoteEnabled(true);
+
+                $dompdf = new Dompdf($options);
+                $views = ['documento.fichaAssociativa'];
+                $html = '';
+
+                foreach ($views as $view) {
+                    $html .= View::make($view, ['data' => $request, 'base64Image' => $base64Image])->render();
+                }
+
+                $dompdf->loadHtml($html);
+                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->render();
+                $pdfContent = $dompdf->output();
+
+                $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
+                file_put_contents($tempFileName, $pdfContent);
+
+                $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
+                Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
+
+                $ficha_associativa = Storage::url('documentos/' . $nomeArquivo);
+                $vendaData = $this->prepareVendaData($request, $request->id_vendedor, $ficha_associativa);
             } else {
-                $imageData = file_get_contents($file);
+                $image = $request->file('documento_com_foto');
+                $imageData = file_get_contents($image);
                 $base64Image = base64_encode($imageData);
 
                 $options = new Options();
@@ -70,20 +99,24 @@ class NomeController extends Controller
 
                 $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
                 Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
+
+                $ficha_associativa = Storage::url('documentos/' . $nomeArquivo);
+                $vendaData = $this->prepareVendaData($request, $request->id_vendedor, $ficha_associativa);
             }
+        } else {
+            $vendaData = $this->prepareVendaData($request, $request->id_vendedor);
         }
 
-        $ficha_associativa = Storage::url('documentos/' . $nomeArquivo);
-        $vendaData = $this->prepareVendaData($request, $request->id_vendedor, $ficha_associativa);
+        $venda = Nome::create($vendaData);
 
-        // $documentoBase64 = base64_encode(file_get_contents(storage_path('app/' . $nomeArquivo)));
-        // $this->enviaFicha($documentoBase64, $venda->whatsapp);
         if (!$venda) {
             return view('dashboard.vendas.venda', ['produto' => $request->produto, 'error' => 'Não foi possível realizar essa venda, tente novamente mais tarde!']);
         }
 
         return view('dashboard.vendas.documento', ['produto' => $request->produto, 'nome' => $venda, 'success' => 'Agora, envie os documentos necessários!']);
     }
+
+
 
     public function excluiNome(Request $request) {
 
@@ -142,7 +175,7 @@ class NomeController extends Controller
         return redirect()->route('dashboard')->with('success', 'Cadastro de Associado Completo!');
     }
 
-    private function prepareVendaData(Request $request, $id, $ficha) {
+    private function prepareVendaData(Request $request, $id, $ficha = null) {
         $lista = Lista::where('status', 1)->first();
         $vendaData = ['id_vendedor' => $id];
         $vendaData['nome'] = $request->nome;
@@ -151,7 +184,7 @@ class NomeController extends Controller
         $vendaData['email'] = $request->email;
         $vendaData['id_produto'] = $request->id_produto;
         $vendaData['id_lista'] = $lista->id;
-        $vendaData['valor'] = 0;
+        $vendaData['valor'] = $request->valor;
         $vendaData['ficha_associativa'] = $ficha;
 
         if ($request->documento_com_foto) {
@@ -162,6 +195,57 @@ class NomeController extends Controller
         }
 
         return $vendaData;
+    }
+
+    function convertPdfToImages($pdfPath)
+    {
+        $pdf = new Pdf(storage_path('app/public/' . $pdfPath));
+
+        // Especifique o formato das imagens de saída (por exemplo, JPEG)
+        $pdf->setOutputFormat('jpeg');
+
+        // Caminho para onde você deseja salvar as imagens geradas
+        $imagePath = storage_path('app/public/imagens/');
+
+        // Converta o PDF em imagens e salve-as na pasta especificada
+        $pdf->saveImage($imagePath);
+
+        // Obtenha a lista de imagens geradas no diretório
+        $images = File::files($imagePath);
+
+        return $images;
+    }
+
+    // Função para gerar o PDF a partir das imagens
+    function generatePdfFromImages($images) {
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+
+        $dompdf = new Dompdf($options);
+        $views = ['documento.fichaAssociativa'];
+        $html = '';
+
+        // Loop para renderizar as imagens no HTML
+        foreach ($images as $image) {
+            $html .= '<img src="' . $image . '"><br>';
+        }
+
+        foreach ($views as $view) {
+            $html .= View::make($view)->render();
+        }
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $pdfContent = $dompdf->output();
+
+        $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
+        file_put_contents($tempFileName, $pdfContent);
+
+        $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
+        Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
+
+        return Storage::url('documentos/' . $nomeArquivo);
     }
 
     public function consulta(Request $request) {
