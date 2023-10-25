@@ -31,7 +31,6 @@ class NomeController extends Controller
     }
 
     public function cadastraNome(Request $request) {
-        // Validação dos dados de entrada
         $request->validate([
             'cpfcnpj' => 'required',
             'nome' => 'required|string|max:255',
@@ -89,7 +88,10 @@ class NomeController extends Controller
 
             return $images;
         }
+
+        return [];
     }
+
 
     private function generatePdfFromImages($images) {
         $options = new Options();
