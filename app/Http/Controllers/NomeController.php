@@ -16,8 +16,6 @@ use Imagick;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\File;
 
 class NomeController extends Controller
 {
@@ -47,24 +45,23 @@ class NomeController extends Controller
 
             if ($file->getMimeType() === 'application/pdf') {
                 $pdfPath = $file->store('documentos', 'public');
-                return $pdfImages = $this->convertPdfToImages($pdfPath);
-            //     $base64Image = $this->generatePdfFromImages($pdfImages);
-            // } else {
-            //     $imageData = file_get_contents($file);
-            //     $base64Image = base64_encode($imageData);
-            // }
-
-            // $pdfContent = $this->generatePdfFromView($request, $base64Image);
-
-            // $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
-            // file_put_contents($tempFileName, $pdfContent);
-
-            // $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
-            // Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
-
-            // $vendaData['ficha_associativa'] = Storage::url('documentos/' . $nomeArquivo);
+                $pdfImages = $this->convertPdfToImages($pdfPath);
+                $base64Image = $this->generatePdfFromImages($pdfImages);
+            } else {
+                $imageData = file_get_contents($file);
+                $base64Image = base64_encode($imageData);
             }
-        }
+
+            $pdfContent = $this->generatePdfFromView($request, $base64Image);
+
+            $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
+            file_put_contents($tempFileName, $pdfContent);
+
+            $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
+            Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
+
+            $vendaData['ficha_associativa'] = Storage::url('documentos/' . $nomeArquivo);
+            }
 
         $vendaData = array_merge($vendaData, $this->prepareVendaData($request, $request->id_vendedor));
         $venda = Nome::create($vendaData);
@@ -76,22 +73,20 @@ class NomeController extends Controller
         return view('dashboard.vendas.documento', ['produto' => $request->produto, 'nome' => $venda, 'success' => 'Agora, envie os documentos necessários!']);
     }
 
-    private function convertPdfToImages($pdfPath) {
-        $fullPath = public_path($pdfPath);
-
-        if (file_exists($fullPath)) {
+    private function convertPdfToImage($pdfPath) {
+        if (file_exists($pdfPath)) {
             $imagick = new Imagick();
-            $imagick->readImage($fullPath);
-            $images = [];
-            foreach ($imagick as $image) {
-                $images[] = $image;
-            }
+            $imagick->readImage($pdfPath);
+            $imagick->setIteratorIndex(0);
+            $image = $imagick->getImage();
 
-            return $images;
+            return $image;
         }
 
-        return [];
+        return null;
     }
+
+
 
 
     private function generatePdfFromImages($images) {
