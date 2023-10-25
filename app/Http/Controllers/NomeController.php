@@ -47,22 +47,23 @@ class NomeController extends Controller
 
             if ($file->getMimeType() === 'application/pdf') {
                 $pdfPath = $file->store('documentos', 'public');
-                $pdfImages = $this->convertPdfToImages($pdfPath);
-                $base64Image = $this->generatePdfFromImages($pdfImages);
-            } else {
-                $imageData = file_get_contents($file);
-                $base64Image = base64_encode($imageData);
+                return $pdfImages = $this->convertPdfToImages($pdfPath);
+            //     $base64Image = $this->generatePdfFromImages($pdfImages);
+            // } else {
+            //     $imageData = file_get_contents($file);
+            //     $base64Image = base64_encode($imageData);
+            // }
+
+            // $pdfContent = $this->generatePdfFromView($request, $base64Image);
+
+            // $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
+            // file_put_contents($tempFileName, $pdfContent);
+
+            // $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
+            // Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
+
+            // $vendaData['ficha_associativa'] = Storage::url('documentos/' . $nomeArquivo);
             }
-
-            $pdfContent = $this->generatePdfFromView($request, $base64Image);
-
-            $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
-            file_put_contents($tempFileName, $pdfContent);
-
-            $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
-            Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
-
-            $vendaData['ficha_associativa'] = Storage::url('documentos/' . $nomeArquivo);
         }
 
         $vendaData = array_merge($vendaData, $this->prepareVendaData($request, $request->id_vendedor));
