@@ -116,8 +116,6 @@ class NomeController extends Controller
         return view('dashboard.vendas.documento', ['produto' => $request->produto, 'nome' => $venda, 'success' => 'Agora, envie os documentos necessários!']);
     }
 
-
-
     public function excluiNome(Request $request) {
 
         $nome = Nome::where('id', $request->id)->first();
@@ -200,23 +198,14 @@ class NomeController extends Controller
     function convertPdfToImages($pdfPath)
     {
         $pdf = new Pdf(storage_path('app/public/' . $pdfPath));
-
-        // Especifique o formato das imagens de saída (por exemplo, JPEG)
         $pdf->setOutputFormat('jpeg');
-
-        // Caminho para onde você deseja salvar as imagens geradas
-        $imagePath = storage_path('app/public/imagens/');
-
-        // Converta o PDF em imagens e salve-as na pasta especificada
+        $imagePath = public_path('documentos/');
         $pdf->saveImage($imagePath);
-
-        // Obtenha a lista de imagens geradas no diretório
         $images = File::files($imagePath);
 
         return $images;
     }
 
-    // Função para gerar o PDF a partir das imagens
     function generatePdfFromImages($images) {
         $options = new Options();
         $options->setIsRemoteEnabled(true);
@@ -225,7 +214,6 @@ class NomeController extends Controller
         $views = ['documento.fichaAssociativa'];
         $html = '';
 
-        // Loop para renderizar as imagens no HTML
         foreach ($images as $image) {
             $html .= '<img src="' . $image . '"><br>';
         }
