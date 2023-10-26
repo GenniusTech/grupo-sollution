@@ -7,12 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Lista;
 use App\Models\Nome;
 
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use Jurosh\PDFMerge\PDFMerger;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Imagick;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -35,81 +32,30 @@ class NomeController extends Controller
             'dataNascimento' => 'required|string|max:20',
             'email' => 'string|max:100',
             'whatsapp' => 'string|max:20',
-            'documento_com_foto' => 'mimes:jpeg,png,jpg,pdf',
         ]);
 
-        $vendaData = [];
-
-        if ($request->hasFile('documento_com_foto')) {
-            $file = $request->file('documento_com_foto');
-
-            if ($file->getMimeType() === 'application/pdf') {
-                $pdfPath = $file->store('documentos', 'public');
-                $imageData = $this->convertPdfToImage($pdfPath);
-            } else {
-                $imageData = file_get_contents($file);
-            }
-
-            $base64Image = base64_encode($imageData);
-            $pdfContent = $this->generatePdfFromView($request, $base64Image);
-
-            $tempFileName = tempnam(sys_get_temp_dir(), 'ficha_');
-            file_put_contents($tempFileName, $pdfContent);
-
-            $nomeArquivo = 'ficha_' . uniqid() . '.pdf';
-            Storage::disk('public')->put('documentos/' . $nomeArquivo, file_get_contents($tempFileName));
-
-            $vendaData['ficha_associativa'] = Storage::url('documentos/' . $nomeArquivo);
-            }
-
-        $vendaData = array_merge($vendaData, $this->prepareVendaData($request, $request->id_vendedor));
+        $vendaData = $this->prepareVendaData($request, $request->id_vendedor);
         $venda = Nome::create($vendaData);
 
         if (!$venda) {
-            return view('dashboard.vendas.venda', ['produto' => $request->produto, 'error' => 'Não foi possível realizar essa venda, tente novamente mais tarde!']);
+            return view('dashboard.vendas.venda', ['produto' => $request->produto, 'error' => 'Não foi possível cadastrar esse Associado, tente novamente mais tarde!']);
         }
 
         return view('dashboard.vendas.documento', ['produto' => $request->produto, 'nome' => $venda, 'success' => 'Agora, envie os documentos necessários!']);
     }
 
-    private function convertPdfToImage($pdfPath) {
-        if (file_exists($pdfPath)) {
-            $imagick = new Imagick();
-            $imagick->readImage($pdfPath);
-            $imagick->setIteratorIndex(0);
-            $image = $imagick->getImage();
+    private function prepareVendaData(Request $request, $id) {
+        $lista = Lista::where('status', 1)->first();
+        $vendaData = ['id_vendedor' => $id];
+        $vendaData['nome'] = $request->nome;
+        $vendaData['cpfcnpj'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
+        $vendaData['whatsapp'] = preg_replace('/[^0-9]/', '', $request->whatsapp);
+        $vendaData['email'] = $request->email;
+        $vendaData['id_produto'] = $request->id_produto;
+        $vendaData['id_lista'] = $lista->id;
+        $vendaData['valor'] = $request->valor;
 
-            $outputDirectory = public_path('storage/documentos/');
-            $outputFileName = uniqid() . '.' . $image->getImageFormat();
-            $outputPath = $outputDirectory . $outputFileName;
-
-            $image->writeImage($outputPath);
-
-            return $outputPath;
-        }
-
-        return null;
-    }
-
-
-    private function generatePdfFromView(Request $request, $base64Image) {
-        $options = new Options();
-        $options->setIsRemoteEnabled(true);
-
-        $dompdf = new Dompdf($options);
-        $views = ['documento.fichaAssociativa'];
-        $html = '';
-
-        foreach ($views as $view) {
-            $html .= view($view, ['data' => $request, 'base64Image' => $base64Image])->render();
-        }
-
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $pdfContent = $dompdf->output();
-
-        return $pdfContent;
+        return $vendaData;
     }
 
     public function excluiNome(Request $request) {
@@ -155,6 +101,15 @@ class NomeController extends Controller
             $pdfFiles[] = public_path('storage/documentos/'.$nomeArquivo);
         }
 
+        if ($request->documento_com_foto) {
+            $nomeArquivo = uniqid('documento_com_foto_') . '.' . $request->documento_com_foto->getClientOriginalExtension();
+            $caminhoImagem = $request->consulta->storeAs('public/documentos', $nomeArquivo);
+
+            $nome->documento_com_foto = Storage::url($caminhoImagem);
+            $nome->save();
+            $pdfFiles[] = public_path('storage/documentos/'.$nomeArquivo);
+        }
+
         $pdfFileUnificadoPath = public_path('storage/documentos/' . uniqid('documento_final_') . '.pdf');
 
         foreach ($pdfFiles as $pdfFilePath) {
@@ -167,28 +122,6 @@ class NomeController extends Controller
         $nome->save();
 
         return redirect()->route('dashboard')->with('success', 'Cadastro de Associado Completo!');
-    }
-
-    private function prepareVendaData(Request $request, $id, $ficha = null) {
-        $lista = Lista::where('status', 1)->first();
-        $vendaData = ['id_vendedor' => $id];
-        $vendaData['nome'] = $request->nome;
-        $vendaData['cpfcnpj'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
-        $vendaData['whatsapp'] = preg_replace('/[^0-9]/', '', $request->whatsapp);
-        $vendaData['email'] = $request->email;
-        $vendaData['id_produto'] = $request->id_produto;
-        $vendaData['id_lista'] = $lista->id;
-        $vendaData['valor'] = $request->valor;
-        $vendaData['ficha_associativa'] = $ficha;
-
-        if ($request->documento_com_foto) {
-            $nomeArquivo = uniqid('documento_') . '.' . $request->documento_com_foto->getClientOriginalExtension();
-            $caminhoImagem = $request->documento_com_foto->storeAs('public/documentos', $nomeArquivo);
-
-            $vendaData['documento_com_foto'] = Storage::url($caminhoImagem);
-        }
-
-        return $vendaData;
     }
 
     public function consulta(Request $request) {

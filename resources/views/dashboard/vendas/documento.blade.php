@@ -21,18 +21,23 @@
                                     <div class="col-sm-12 col-lg-6 offset-lg-3">
                                         <div class="form-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="ficha_associativa"
-                                                    name="ficha_associativa" accept="application/pdf" required>
-                                                <label class="custom-file-label" for="ficha_associativa">Ficha Associativa
-                                                    (Assinada)</label>
+                                                <input type="file" class="custom-file-input" id="documento_com_foto" name="documento_com_foto" accept="application/pdf" required>
+                                                <label class="custom-file-label" for="documento_com_foto">Documento (Com Foto)</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-lg-6 offset-lg-3">
                                         <div class="form-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="consulta"
-                                                    name="consulta" accept="application/pdf" required>
+                                                <input type="file" class="custom-file-input" id="ficha_associativa" name="ficha_associativa" accept="application/pdf" required>
+                                                <label class="custom-file-label" for="ficha_associativa">Ficha Associativa (Assinada)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-6 offset-lg-3">
+                                        <div class="form-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="consulta" name="consulta" accept="application/pdf" required>
                                                 <label class="custom-file-label" for="consulta">Consulta</label>
                                             </div>
                                         </div>
@@ -40,10 +45,7 @@
                                     <div class="col-sm-12 col-lg-6 offset-lg-3">
                                         <div class="form-group d-flex text-center">
                                             <form action="">
-                                                <a href="{{ asset($nome->ficha_associativa) }}"
-                                                    class="btn btn-outline-primary m-1 w-50" download>Baixar Ficha</a>
-                                                <a href="#" class="btn btn-outline-info m-1 w-50" onclick="geraConsulta()">Gerar
-                                                    Consulta</a>
+                                                <a href="#" class="btn btn-outline-info m-1 w-50" onclick="geraConsulta()">Gerar Consulta</a>
                                                 <button type="submit" class="btn btn-success m-1 w-50">Enviar</button>
                                             </form>
                                         </div>
@@ -58,18 +60,23 @@
                                     <div class="col-sm-12 col-lg-6 offset-lg-3">
                                         <div class="form-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="ficha_associativa"
-                                                    name="ficha_associativa" accept="application/pdf" required>
-                                                <label class="custom-file-label" for="ficha_associativa">Ficha Associativa
-                                                    (Assinada)</label>
+                                                <input type="file" class="custom-file-input" id="documento_com_foto" name="documento_com_foto" accept="application/pdf" required>
+                                                <label class="custom-file-label" for="documento_com_foto">Documento (Com Foto)</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-lg-6 offset-lg-3">
                                         <div class="form-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="cartao_cnpj"
-                                                    name="cartao_cnpj" accept="application/pdf" required>
+                                                <input type="file" class="custom-file-input" id="ficha_associativa" name="ficha_associativa" accept="application/pdf" required>
+                                                <label class="custom-file-label" for="ficha_associativa">Ficha Associativa (Assinada)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-6 offset-lg-3">
+                                        <div class="form-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="cartao_cnpj" name="cartao_cnpj" accept="application/pdf" required>
                                                 <label class="custom-file-label" for="cartao_cnpj">Cartão CNPJ</label>
                                             </div>
                                         </div>
@@ -77,8 +84,7 @@
                                     <div class="col-sm-12 col-lg-6 offset-lg-3">
                                         <div class="form-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="consulta"
-                                                    name="consulta" accept="application/pdf" required>
+                                                <input type="file" class="custom-file-input" id="consulta" name="consulta" accept="application/pdf" required>
                                                 <label class="custom-file-label" for="consulta">Consulta</label>
                                             </div>
                                         </div>
@@ -86,13 +92,8 @@
                                     <div class="col-sm-12 col-lg-6 offset-lg-3">
                                         <div class="form-group d-flex text-center">
                                             <form action="">
-                                                <a href="{{ asset($nome->ficha_associativa) }}"
-                                                    class="btn btn-outline-primary m-1 w-25" download>Gerar Ficha</a>
-                                                <a href="#" class="btn btn-outline-info m-1 w-25" onclick="geraConsulta()">Gerar
-                                                    Consulta</a>
-                                                <a href="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/cnpjreva_solicitacao.asp"
-                                                    class="btn btn-outline-warning m-1 w-25" target="_blank">Gerar Cart
-                                                    CNPJ</a>
+                                                <a href="#" class="btn btn-outline-info m-1 w-25" onclick="geraConsulta()">Gerar Consulta</a>
+                                                <a href="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/cnpjreva_solicitacao.asp" class="btn btn-outline-warning m-1 w-25" target="_blank">Gerar Cart CNPJ</a>
                                                 <button type="submit" class="btn btn-success m-1 w-25">Enviar</button>
                                             </form>
                                         </div>

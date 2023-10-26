@@ -14,6 +14,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
+
                             <div class="col-12">
                                 @if (session('error'))
                                     <div class="alert alert-danger">
@@ -26,18 +27,17 @@
                                     </div>
                                 @endif
                             </div>
+
                             <div id="pesquisa" class="col-12">
                                 <div class="row">
                                     <div class="col-sm-12 col-lg-4">
                                         <div class="form-group">
-                                            <input type="number" class="form-control" id="cpf"
-                                                placeholder="CPF/CNPJ:">
+                                            <input type="number" class="form-control" id="cpf" placeholder="CPF ou CNPJ">
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-lg-4">
                                         <div class="form-group">
-                                            <button type="button" id="consultar" class="btn btn-success">Buscar
-                                                dados</button>
+                                            <button type="button" id="consultar" class="btn btn-success">Buscar dados</button>
                                         </div>
                                     </div>
                                 </div>
@@ -51,44 +51,29 @@
                                     <input type="hidden" name="id_produto" value="1">
 
                                     <div class="row">
-                                        <div class="col-sm-12 col-lg-4">
+                                        <div class="col-sm-12 col-lg-6">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="nome"
-                                                    placeholder="Nome">
+                                                <input type="text" class="form-control" name="nome" placeholder="Nome">
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-lg-4">
+                                        <div class="col-sm-12 col-lg-3">
                                             <div class="form-group">
-                                                <input type="number" class="form-control" name="cpfcnpj"
-                                                    placeholder="CPF/CNPJ">
+                                                <input type="number" class="form-control" name="cpfcnpj" placeholder="CPF/CNPJ">
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-lg-4">
+                                        <div class="col-sm-12 col-lg-3">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="dataNascimento"
-                                                    placeholder="D. Nascimento/Abertura">
+                                                <input type="text" class="form-control" name="dataNascimento" placeholder="D. Nascimento/Abertura">
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-lg-4">
+                                        <div class="col-sm-12 col-lg-6">
                                             <div class="form-group">
-                                                <input type="email" class="form-control" name="email"
-                                                    placeholder="E-mail">
+                                                <input type="email" class="form-control" name="email" placeholder="E-mail">
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-lg-4">
+                                        <div class="col-sm-12 col-lg-6">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="whatsapp"
-                                                    placeholder="WhatsApp">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-lg-4">
-                                            <div class="form-group">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="documento_com_foto"
-                                                        name="documento_com_foto">
-                                                    <label class="custom-file-label" for="documento_com_foto">Documento com
-                                                        foto (RG ou CNH)</label>
-                                                </div>
+                                                <input type="number" class="form-control" name="whatsapp" placeholder="WhatsApp">
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-lg-4 offset-lg-4 text-center">
@@ -97,6 +82,7 @@
                                     </div>
                                 </form>
                             </div>
+
                         </div>
                     </div>
                 </div>
