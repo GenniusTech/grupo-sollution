@@ -136,10 +136,10 @@
                                                 <tr>
                                                     <td>{{ $nome->nome }}</td>
                                                     <td>{{ $nome->cpfcnpj }}</td>
-                                                    <td class="text-center"><a target="_blank" class="btn btn-outline-info"    href="@if ($nome->ficha_associativa != null) {{ asset($nome->ficha_associativa) }} @else Não Enviado @endif">Ficha</a></td>
-                                                    <td class="text-center"><a target="_blank" class="btn btn-outline-success" href="@if ($nome->documento_com_foto != null) {{ asset($nome->documento_com_foto) }} @else Não Enviado @endif">Doc. Foto</a></td>
-                                                    <td class="text-center"><a target="_blank" class="btn btn-outline-primary" href="@if ($nome->consulta != null) {{ asset($nome->consulta) }} @else Não Enviado @endif">Cart. CNPJ</a></td>
-                                                    <td class="text-center"><a target="_blank" class="btn btn-outline-primary" href="@if ($nome->consulta != null) {{ asset($nome->consulta) }} @else Não Enviado @endif">Consulta</a></td>
+                                                    <td class="text-center">@if ($nome->ficha_associativa != null)  <a target="_blank" class="btn btn-outline-info"    href="{{ asset($nome->ficha_associativa) }}">Ficha</a> @else Não Enviado @endif</td>
+                                                    <td class="text-center">@if ($nome->documento_com_foto != null) <a target="_blank" class="btn btn-outline-success" href="{{ asset($nome->documento_com_foto) }}">Doc. Foto</a> @else Não Enviado @endif</td>
+                                                    <td class="text-center">@if ($nome->cartao_cnpj != null)        <a target="_blank" class="btn btn-outline-primary" href="{{ asset($nome->cartao_cnpj) }}">Cart. CNPJ</a>@else Não Enviado @endif</td>
+                                                    <td class="text-center">@if ($nome->consulta != null)           <a target="_blank" class="btn btn-outline-primary" href="{{ asset($nome->consulta) }}">Consulta</a>@else Não Enviado @endif</td>
                                                     <td class="text-center">
                                                         <form action="{{ route('excluiNome') }}" method="POST">
                                                             @csrf
