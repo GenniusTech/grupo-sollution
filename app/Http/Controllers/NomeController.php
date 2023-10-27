@@ -87,6 +87,10 @@ class NomeController extends Controller
             $pdfPath = public_path('storage/documentos/' . uniqid('ficha_associativa_') . '.pdf');
             file_put_contents($pdfPath, $dompdf->output());
 
+            $nomeArquivo = uniqid('ficha_associativa') . '.' . $request->ficha_associativa->getClientOriginalExtension();
+            $caminhoImagem = $request->ficha_associativa->storeAs('public/documentos', $nomeArquivo);
+            $nome->ficha_associativa = Storage::url($caminhoImagem);
+
             $pdfFiles[] = $pdfPath;
         } else {
             $nomeArquivo = uniqid('ficha_') . '.' . $request->ficha_associativa->getClientOriginalExtension();
@@ -111,6 +115,10 @@ class NomeController extends Controller
                 $dompdf->render();
                 $pdfPath = public_path('storage/documentos/' . uniqid('cartao_cnpj_') . '.pdf');
                 file_put_contents($pdfPath, $dompdf->output());
+
+                $nomeArquivo = uniqid('cartao_cnpj') . '.' . $request->cartao_cnpj->getClientOriginalExtension();
+                $caminhoImagem = $request->cartao_cnpj->storeAs('public/documentos', $nomeArquivo);
+                $nome->cartao_cnpj = Storage::url($caminhoImagem);
 
                 $pdfFiles[] = $pdfPath;
             } else {
@@ -137,6 +145,10 @@ class NomeController extends Controller
             $pdfPath = public_path('storage/documentos/' . uniqid('consulta_') . '.pdf');
             file_put_contents($pdfPath, $dompdf->output());
 
+            $nomeArquivo = uniqid('consulta') . '.' . $request->consulta->getClientOriginalExtension();
+            $caminhoImagem = $request->consulta->storeAs('public/documentos', $nomeArquivo);
+            $nome->consulta = Storage::url($caminhoImagem);
+
             $pdfFiles[] = $pdfPath;
         } else {
             $nomeArquivo = uniqid('consulta_') . '.' . $request->consulta->getClientOriginalExtension();
@@ -160,6 +172,10 @@ class NomeController extends Controller
             $dompdf->render();
             $pdfPath = public_path('storage/documentos/' . uniqid('documento_com_foto_') . '.pdf');
             file_put_contents($pdfPath, $dompdf->output());
+
+            $nomeArquivo = uniqid('documento_com_foto_') . '.' . $request->documento_com_foto->getClientOriginalExtension();
+            $caminhoImagem = $request->documento_com_foto->storeAs('public/documentos', $nomeArquivo);
+            $nome->documento_com_foto = Storage::url($caminhoImagem);
 
             $pdfFiles[] = $pdfPath;
         } else {
