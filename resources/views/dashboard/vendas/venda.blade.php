@@ -53,17 +53,17 @@
                                     <div class="row">
                                         <div class="col-sm-12 col-lg-6">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="nome" placeholder="Nome">
+                                                <input type="text" class="form-control" name="nome" placeholder="Nome" required>
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-lg-3">
                                             <div class="form-group">
-                                                <input type="number" class="form-control" name="cpfcnpj" placeholder="CPF/CNPJ">
+                                                <input type="number" class="form-control" name="cpfcnpj" placeholder="CPF/CNPJ" required>
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-lg-3">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="dataNascimento" placeholder="D. Nascimento/Abertura">
+                                                <input type="text" class="form-control" name="dataNascimento" placeholder="D. Nascimento/Abertura" oninput="mascaraData(this)" required>
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-lg-6">

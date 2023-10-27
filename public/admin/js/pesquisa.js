@@ -41,3 +41,11 @@ $(document).ready(function () {
         setTimeout(function () { URL.revokeObjectURL(url); }, 100);
     });
 });
+
+function mascaraData(dataInput) {
+    let data = dataInput.value;
+    data = data.replace(/\D/g, '');
+    data = data.replace(/(\d{2})(\d)/, '$1-$2')
+    data = data.replace(/(\d{2})(\d)/, '$1-$2');
+    dataInput.value = data;
+}

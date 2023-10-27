@@ -124,8 +124,10 @@
                                             <tr>
                                                 <th>Cliente</th>
                                                 <th>CPF/CNPJ</th>
-                                                <th>Produto</th>
-                                                <th>Lista</th>
+                                                <th class="text-center">Ficha</th>
+                                                <th class="text-center">Doc. Foto</th>
+                                                <th class="text-center">Cart. CNPJ</th>
+                                                <th class="text-center">Consulta</th>
                                                 <th class="text-center">Opções</th>
                                             </tr>
                                         </thead>
@@ -134,30 +136,15 @@
                                                 <tr>
                                                     <td>{{ $nome->nome }}</td>
                                                     <td>{{ $nome->cpfcnpj }}</td>
-                                                    <td>
-                                                        @switch($nome->id_produto)
-                                                            @case(1)
-                                                                Limpa Nome
-                                                            @break
-
-                                                            @default
-                                                                Produto Desconhecido
-                                                        @endswitch
-                                                    </td>
-                                                    <td>{{ $nome->lista->titulo }}</td>
+                                                    <td class="text-center"><a target="_blank" class="btn btn-outline-info"    href="@if ($nome->ficha_associativa != null) {{ asset($nome->ficha_associativa) }} @else Não Enviado @endif">Ficha</a></td>
+                                                    <td class="text-center"><a target="_blank" class="btn btn-outline-success" href="@if ($nome->documento_com_foto != null) {{ asset($nome->documento_com_foto) }} @else Não Enviado @endif">Doc. Foto</a></td>
+                                                    <td class="text-center"><a target="_blank" class="btn btn-outline-primary" href="@if ($nome->consulta != null) {{ asset($nome->consulta) }} @else Não Enviado @endif">Cart. CNPJ</a></td>
+                                                    <td class="text-center"><a target="_blank" class="btn btn-outline-primary" href="@if ($nome->consulta != null) {{ asset($nome->consulta) }} @else Não Enviado @endif">Consulta</a></td>
                                                     <td class="text-center">
                                                         <form action="{{ route('excluiNome') }}" method="POST">
                                                             @csrf
-                                                            <input type="hidden" name="id"
-                                                                value="{{ $nome->id }}">
+                                                            <input type="hidden" name="id" value="{{ $nome->id }}">
                                                             <button type="submit" class="btn btn-danger">Excluir</button>
-                                                            <a target="_blank" class="btn btn-outline-info"
-                                                                href="@if ($nome->ficha_associativa != null) {{ asset($nome->ficha_associativa) }} @else # @endif">Ficha</a>
-                                                            <a target="_blank" class="btn btn-outline-primary"
-                                                                href="@if ($nome->consulta != null) {{ asset($nome->consulta) }} @else # @endif">Consulta</a>
-                                                            <a target="_blank" class="btn btn-outline-success"
-                                                                href="@if ($nome->documento_final != null) {{ asset($nome->documento_final) }} @else # @endif">Doc.
-                                                                Final</a>
                                                         </form>
                                                     </td>
                                                 </tr>

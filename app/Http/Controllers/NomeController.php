@@ -10,6 +10,7 @@ use App\Models\Nome;
 use Jurosh\PDFMerge\PDFMerger;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Dompdf\Dompdf;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,8 +31,6 @@ class NomeController extends Controller
             'cpfcnpj' => 'required',
             'nome' => 'required|string|max:255',
             'dataNascimento' => 'required|string|max:20',
-            'email' => 'string|max:100',
-            'whatsapp' => 'string|max:20',
         ]);
 
         $vendaData = $this->prepareVendaData($request, $request->id_vendedor);
@@ -74,7 +73,22 @@ class NomeController extends Controller
         $pdf = new PDFMerger;
         $pdfFiles = [];
 
-        if ($request->ficha_associativa) {
+        if (in_array($request->ficha_associativa->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])) {
+            $imagemPath = $request->ficha_associativa->path();
+            $imagemData = file_get_contents($imagemPath);
+            $imagemBase64 = 'data:image/' . $request->ficha_associativa->getClientOriginalExtension() . ';base64,' . base64_encode($imagemData);
+
+            $html = '<img src="' . $imagemBase64 . '" />';
+
+            $dompdf = new Dompdf();
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $pdfPath = public_path('storage/documentos/' . uniqid('ficha_associativa_') . '.pdf');
+            file_put_contents($pdfPath, $dompdf->output());
+
+            $pdfFiles[] = $pdfPath;
+        } else {
             $nomeArquivo = uniqid('ficha_') . '.' . $request->ficha_associativa->getClientOriginalExtension();
             $caminhoImagem = $request->ficha_associativa->storeAs('public/documentos', $nomeArquivo);
 
@@ -84,15 +98,47 @@ class NomeController extends Controller
         }
 
         if ($request->cartao_cnpj) {
-            $nomeArquivo = uniqid('cartao_cnpj_') . '.' . $request->cartao_cnpj->getClientOriginalExtension();
-            $caminhoImagem = $request->cartao_cnpj->storeAs('public/documentos', $nomeArquivo);
+            if (in_array($request->cartao_cnpj->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])) {
+                $imagemPath = $request->cartao_cnpj->path();
+                $imagemData = file_get_contents($imagemPath);
+                $imagemBase64 = 'data:image/' . $request->cartao_cnpj->getClientOriginalExtension() . ';base64,' . base64_encode($imagemData);
 
-            $nome->cartao_cnpj = Storage::url($caminhoImagem);
-            $nome->save();
-            $pdfFiles[] = public_path('storage/documentos/'.$nomeArquivo);
+                $html = '<img src="' . $imagemBase64 . '" />';
+
+                $dompdf = new Dompdf();
+                $dompdf->loadHtml($html);
+                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->render();
+                $pdfPath = public_path('storage/documentos/' . uniqid('cartao_cnpj_') . '.pdf');
+                file_put_contents($pdfPath, $dompdf->output());
+
+                $pdfFiles[] = $pdfPath;
+            } else {
+                $nomeArquivo = uniqid('cartao_cnpj_') . '.' . $request->cartao_cnpj->getClientOriginalExtension();
+                $caminhoImagem = $request->cartao_cnpj->storeAs('public/documentos', $nomeArquivo);
+
+                $nome->cartao_cnpj = Storage::url($caminhoImagem);
+                $nome->save();
+                $pdfFiles[] = public_path('storage/documentos/'.$nomeArquivo);
+            }
         }
 
-        if ($request->consulta) {
+        if (in_array($request->consulta->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])) {
+            $imagemPath = $request->consulta->path();
+            $imagemData = file_get_contents($imagemPath);
+            $imagemBase64 = 'data:image/' . $request->consulta->getClientOriginalExtension() . ';base64,' . base64_encode($imagemData);
+
+            $html = '<img src="' . $imagemBase64 . '" />';
+
+            $dompdf = new Dompdf();
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $pdfPath = public_path('storage/documentos/' . uniqid('consulta_') . '.pdf');
+            file_put_contents($pdfPath, $dompdf->output());
+
+            $pdfFiles[] = $pdfPath;
+        } else {
             $nomeArquivo = uniqid('consulta_') . '.' . $request->consulta->getClientOriginalExtension();
             $caminhoImagem = $request->consulta->storeAs('public/documentos', $nomeArquivo);
 
@@ -101,7 +147,22 @@ class NomeController extends Controller
             $pdfFiles[] = public_path('storage/documentos/'.$nomeArquivo);
         }
 
-        if ($request->documento_com_foto) {
+        if (in_array($request->documento_com_foto->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])) {
+            $imagemPath = $request->documento_com_foto->path();
+            $imagemData = file_get_contents($imagemPath);
+            $imagemBase64 = 'data:image/' . $request->documento_com_foto->getClientOriginalExtension() . ';base64,' . base64_encode($imagemData);
+
+            $html = '<img src="' . $imagemBase64 . '" />';
+
+            $dompdf = new Dompdf();
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $pdfPath = public_path('storage/documentos/' . uniqid('documento_com_foto_') . '.pdf');
+            file_put_contents($pdfPath, $dompdf->output());
+
+            $pdfFiles[] = $pdfPath;
+        } else {
             $nomeArquivo = uniqid('documento_com_foto_') . '.' . $request->documento_com_foto->getClientOriginalExtension();
             $caminhoImagem = $request->consulta->storeAs('public/documentos', $nomeArquivo);
 
