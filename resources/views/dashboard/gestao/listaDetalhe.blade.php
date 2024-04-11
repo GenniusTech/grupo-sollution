@@ -57,7 +57,8 @@
                                         <form action="{{ route('geraListaZip') }}" method="POST" class="mt-3">
                                             @csrf
                                             <input type="hidden" name="lista" value="{{ $lista->id }}">
-                                            <button type="button" onclick="geraListaExcel(this);" data-lista="{{ $lista->id }}" class="btn btn-outline-success">Excel Geral</button>
+                                            <button type="button" onclick="geraListaExcel(this);" data-lista="{{ $lista->id }}" data-modelo="1" class="btn btn-outline-success">Excel Geral</button>
+                                            @if(Auth::user()->tipo == 1) <button type="button" onclick="geraListaExcel(this);" data-lista="{{ $lista->id }}" data-modelo="2" class="btn btn-outline-success">Excel Geral (Interna)</button> @endif
                                             <button type="submit" class="btn btn-outline-primary">ZIP Geral</button>
                                         </form>
                                     </div>
@@ -90,7 +91,8 @@
                                                                 @csrf
                                                                 <input type="hidden" name="usuario" value="{{ $usuario['id'] }}">
                                                                 <input type="hidden" name="lista" value="{{ $lista->id }}">
-                                                                <button type="button" onclick="geraListaExcel(this);" data-usuario="{{ $usuario['id'] }}" data-lista="{{ $lista->id }}" class="btn btn-outline-success">Excel</button>
+                                                                <button type="button" onclick="geraListaExcel(this);" data-usuario="{{ $usuario['id'] }}" data-lista="{{ $lista->id }}" data-modelo="1" class="btn btn-outline-success">Excel</button>
+                                                                @if(Auth::user()->tipo == 1) <button type="button" onclick="geraListaExcel(this);" data-usuario="{{ $usuario['id'] }}" data-lista="{{ $lista->id }}" data-modelo="2" class="btn btn-outline-success">Excel (Interno)</button> @endif
                                                                 <button type="submit" class="btn btn-outline-primary">ZIP</button>
                                                             </form>
                                                         </td>
@@ -162,17 +164,25 @@
         <script>
             function geraListaExcel(button) {
                 var usuario = button.getAttribute('data-usuario');
-                var lista = button.getAttribute('data-lista');
+                var lista   = button.getAttribute('data-lista');
+                var modelo  = button.getAttribute('data-modelo');
 
                 $.ajax({
                     url: '{{ route('geraListaExcel') }}',
                     type: "POST",
                     data: {
-                        usuario: usuario,
-                        lista: lista,
+                        usuario : usuario,
+                        lista   : lista,
+                        modelo  : modelo
                     },
                     success: function(data) {
-                        geraExcel(data);
+                        console.log(data);
+                        if(modelo == 1) {
+                            geraExcel(data);
+                        } else {
+                            geraExcelInterno(data);
+                        }
+                        
                     },
                     error: function(xhr, status, error) {
                         Swal.fire({
@@ -208,14 +218,68 @@
                     t: 's'
                 };
                 ws['E1'] = {
-                    v: 'Valor',
-                    t: 's'
-                };
-                ws['F1'] = {
                     v: 'Cadastro',
                     t: 's'
                 };
+                ws['F1'] = {
+                    v: 'Vendedor',
+                    t: 's'
+                };
+                
+                XLSX.utils.book_append_sheet(wb, ws, 'Dados');
+                var wbout = XLSX.write(wb, {
+                    bookType: 'xlsx',
+                    type: 'binary'
+                });
+                var blob = new Blob([s2ab(wbout)], {
+                    type: 'application/octet-stream'
+                });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
 
+                a.href = url;
+                a.download = '{{ $lista->titulo }}.xlsx';
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                URL.revokeObjectURL(url);
+            }
+
+            function geraExcelInterno(data) {
+                var wb = XLSX.utils.book_new();
+                var ws = XLSX.utils.json_to_sheet(data);
+
+                ws['A1'] = {
+                    v: 'Nome',
+                    t: 's'
+                };
+                ws['B1'] = {
+                    v: 'CPF/CNPJ',
+                    t: 's'
+                };
+                ws['C1'] = {
+                    v: 'Email',
+                    t: 's'
+                };
+                ws['D1'] = {
+                    v: 'Telefone',
+                    t: 's'
+                };
+                ws['E1'] = {
+                    v: 'Cadastro',
+                    t: 's'
+                };
+                ws['F1'] = {
+                    v: 'Vendedor',
+                    t: 's'
+                };
+                ws['G1'] = {
+                    v: 'Valor',
+                    t: 's'
+                };
+                
                 XLSX.utils.book_append_sheet(wb, ws, 'Dados');
                 var wbout = XLSX.write(wb, {
                     bookType: 'xlsx',

@@ -12,15 +12,16 @@ use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
 
-class ListaController extends Controller
-{
-    public function lista() {
-        $listas = Lista::orderBy('created_at', 'desc')->get();
+class ListaController extends Controller {
 
+    public function lista() {
+
+        $listas = Lista::orderBy('created_at', 'desc')->get();
         return view('dashboard.gestao.lista', ['listas' => $listas]);
     }
 
     public function listaDetalhe($id) {
+
         $lista = Lista::where('id', $id)->first();
         $query = Nome::where('id_lista', $id);
 
@@ -82,7 +83,6 @@ class ListaController extends Controller
         $lista->save();
 
         return redirect()->back()->with('success', 'Lista cadastrada com sucesso!');
-
     }
 
     public function atualizaLista(Request $request) {
@@ -105,12 +105,11 @@ class ListaController extends Controller
         }
 
         return redirect()->back()->with('error', 'Lista não encontrada!');
-
     }
 
     public function excluiLista(Request $request) {
-        $lista = Lista::where('id', $request->id)->first();
 
+        $lista = Lista::where('id', $request->id)->first();
         if($lista) {
             $lista->delete();
             return redirect()->back()->with('success', 'Lista excluída com sucesso!');

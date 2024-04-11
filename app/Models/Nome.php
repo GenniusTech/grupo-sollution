@@ -27,8 +27,11 @@ class Nome extends Model
         'createdat'
     ];
 
-    public function lista()
-    {
+    public function lista() {
         return $this->belongsTo(Lista::class, 'id_lista');
+    }
+
+    public function seller() {
+        return $this->belongsTo(User::class, 'id_vendedor');
     }
 }

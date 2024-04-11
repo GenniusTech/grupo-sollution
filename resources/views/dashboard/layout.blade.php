@@ -4,7 +4,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <title>SYSTEMDOC - Gestão de Processos</title>
+        <title>Grupo Sollution - Gestão de Processos</title>
 
         <link rel="icon" type="image/png" href="{{ asset('admin/assets/icon.png') }}" />
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -30,7 +30,7 @@
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-file"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">SYSTEMDOC</div>
+                    <div class="sidebar-brand-text mx-3">Grupo Sollution</div>
                 </a>
 
                 <hr class="sidebar-divider my-0">

@@ -93,6 +93,7 @@
 
     <script>
         $('#consultar').click(function() {
+        
             var cpfCnpj = $('#cpf').val();
             $('#resultado').addClass('d-none');
 
@@ -112,28 +113,31 @@
                     cpfCnpj: cpfCnpj,
                 },
                 success: function(data) {
+
                     $('#resultado').removeClass('d-none');
-                    console.log(cpfCnpj.length);
+
                     if(cpfCnpj.length < 12) {
-                        var dataCompleta = data.NASC;
-                        var dataPartes = dataCompleta.split(' ');
-                        var dataNasc = dataPartes[0];
+                        
+                        var dataNascimento = new Date(data.DATA.DADOS_PESSOAIS[0].NASCIMENTO);
+                        var dia = dataNascimento.getDate().toString().padStart(2, '0');
+                        var mes = (dataNascimento.getMonth() + 1).toString().padStart(2, '0');
+                        var ano = dataNascimento.getFullYear();
+                        var dataFormatadaString = `${dia}/${mes}/${ano}`;
 
-                        var dataFormatada = new Date(dataNasc);
-                        var dia = dataFormatada.getDate();
-                        var mes = dataFormatada.getMonth() + 1;
-                        var ano = dataFormatada.getFullYear();
-                        var dataFormatadaString = dia + '-' + mes + '-' + ano;
-
-                        $('input[name=nome]').val(data.NOME);
-                        $('input[name=cpfcnpj]').val(data.CPF);
+                        $('input[name=nome]').val(data.DATA.DADOS_PESSOAIS[0].NOME);
+                        $('input[name=cpfcnpj]').val(data.DATA.DADOS_PESSOAIS[0].CPF);
                         $('input[name=dataNascimento]').val(dataFormatadaString);
-                        $('input[name=whatsapp]').val(data.CONTATOS_ID);
                     } else {
-                        $('input[name=nome]').val(data.razao_social);
-                        $('input[name=cpfcnpj]').val(data.cnpj);
-                        $('input[name=dataNascimento]').val(data.data_inicio_ativ);
-                        $('input[name=whatsapp]').val(data.telefone_1);
+
+                        var dataFundacao = new Date(data.DATA.DADOS_PESSOAIS[0].DATA_FUNDACAO);
+                        var dia = dataNascimento.getDate().toString().padStart(2, '0');
+                        var mes = (dataNascimento.getMonth() + 1).toString().padStart(2, '0');
+                        var ano = dataNascimento.getFullYear();
+                        var dataFormatadaString = `${dia}/${mes}/${ano}`;
+
+                        $('input[name=nome]').val(data.DATA.DADOS_EMPRESA[0].RAZAO_SOCIAL);
+                        $('input[name=cpfcnpj]').val(data.DATA.DADOS_EMPRESA[0].CNPJ);
+                        $('input[name=dataNascimento]').val(dataFormatadaString);
                     }
 
                 },

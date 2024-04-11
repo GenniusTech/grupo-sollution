@@ -9,9 +9,38 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
-class RelatorioController extends Controller
-{
+class RelatorioController extends Controller {
+
     public function geraListaExcel(Request $request) {
+
+        $query = Nome::where('id_lista', $request->lista)->whereNotNull('documento_final');
+        if ($request->usuario) {
+            $query->where('id_vendedor', $request->usuario);
+        }
+
+        $nomes = $query->get();
+
+        $dadosFormatados = [];
+
+        foreach ($nomes as $nome) {
+            $dadosFormatados[] = [
+                'Nome' => $nome->nome,
+                'CPF/CNPJ' => $nome->cpfcnpj,
+                'Email' => $nome->email,
+                'Telefone' => $nome->whatsapp,
+                'Cadastro' => $nome->created_at,
+                'Vendedor' => $nome->seller->nome,
+            ];
+        
+            if($request->modelo == 2) {
+                $dadosFormatados[count($dadosFormatados) - 1]['Valor'] = $nome->valor;
+            }
+        }        
+
+        return $dadosFormatados;
+    }
+
+    public function geraListaExcelInterno(Request $request) {
         $query = Nome::where('id_lista', $request->lista)->whereNotNull('documento_final');
 
         if ($request->usuario) {

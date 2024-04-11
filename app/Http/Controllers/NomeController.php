@@ -210,9 +210,9 @@ class NomeController extends Controller
 
         try {
             if (strlen($cpfCnpj) > 12) {
-                $response = $client->get('https://hyb.com.br/curl_cnpj.php?action=acessa_curl&cnpj=' . $cpfCnpj);
+                $response = $client->get('http://46.4.94.217:3008/serasa/cnpj/' . $cpfCnpj .'?token=RpbAhCw8uMULus1UK6Xm5W73XplSTW2fb5vSctYF7C9L3P7CZF2');
             } else {
-                $response = $client->get('https://api.bronxservices.net/consulta/cGhzbG9mYzpKb3JnZTAxMDEu/serasa/cpf/' . $cpfCnpj);
+                $response = $client->get('http://46.4.94.217:3008/serasa/cpf/' . $cpfCnpj .'?token=RpbAhCw8uMULus1UK6Xm5W73XplSTW2fb5vSctYF7C9L3P7CZF2');
             }
             $data = json_decode($response->getBody(), true);
             return response()->json($data);
