@@ -83,6 +83,7 @@
                             <a class="collapse-item" href="{{ route('lista') }}">Lista</a>
                             <a class="collapse-item" href="{{ route('usuario') }}">Parceiros</a>
                             <a class="collapse-item" href="{{ route('materiais') }}">Documentos de Apoio</a>
+                            <a class="collapse-item" href="{{ route('message') }}">Mensagem</a>
                         </div>
                     </div>
                 </li>
@@ -107,6 +108,11 @@
 
                         <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <p>Olá, {{ Auth::user()->nome }}. Bem-vindo(a)!</p>
+                            <div class="marquee-container">
+                                @foreach($messages as $message)
+                                    <span class="marquee-item">{{ $message->descricao }}</span>
+                                @endforeach
+                            </div>
                         </div>
 
                         <ul class="navbar-nav ml-auto">

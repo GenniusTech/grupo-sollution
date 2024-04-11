@@ -5,6 +5,7 @@ use App\Http\Controllers\ListaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NomeController;
 use App\Http\Controllers\MarketingController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\RelatorioController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,4 +43,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('cadastraLista', [ListaController::class, 'cadastraLista'])->name('cadastraLista');
     Route::post('atualizaLista', [ListaController::class, 'atualizaLista'])->name('atualizaLista');
     Route::post('excluiLista', [ListaController::class, 'excluiLista'])->name('excluiLista');
+
+    Route::get('/message', [MessageController::class, 'view'])->name('message');
+    Route::post('cadastrar-message', [MessageController::class, 'create'])->name('cadastrar-message');
 });
