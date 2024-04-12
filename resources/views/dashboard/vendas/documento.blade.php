@@ -15,8 +15,8 @@
                     <div class="card-body">
                         @if (strlen($nome->cpfcnpj) < 12)
                             <form action="{{ route('cadastraDocumento') }}" method="POST" enctype="multipart/form-data">
-                                <input type="hidden" name="id" value="{{ $nome->id }}">
                                 @csrf
+                                <input type="hidden" name="id" value="{{ $nome->id }}">
                                 <div class="row">
                                     <div class="col-sm-12 col-lg-6 offset-lg-3">
                                         <div class="form-group">
@@ -54,8 +54,8 @@
                             </form>
                         @else
                             <form action="{{ route('cadastraDocumento') }}" method="POST" enctype="multipart/form-data">
-                                <input type="hidden" name="id" value="{{ $nome->id }}">
                                 @csrf
+                                <input type="hidden" name="id" value="{{ $nome->id }}">
                                 <div class="row">
                                     <div class="col-sm-12 col-lg-6 offset-lg-3">
                                         <div class="form-group">
@@ -112,10 +112,10 @@
         function geraConsulta() {
             let cnpfcnpj = {{$nome->cpfcnpj}};
             if(cnpfcnpj.length > 12) {
-                let url = 'https://consulta.gruposollution.com.br/painel/dashboard/consulta/consulta_2/final.php?lista=' + {{ $nome->cpfcnpj }} + '|NVdOaUFFRkZyZlNEUE1uSnk2VUtiZEhSd0R3OVgzVXRDN2ZTPUJ3dS01aXFvP2dTUWwyd2VJNnE9RFVUaVJHM3JSWVoyODI4YUpicG5pVU0yVlNlcHNDPzlWMEZLZ090WGZyYXpONGhuZVpvdTBEeXk4ZjZJSVpPWUsvUkE4alk5ajM3eFliOFZGcHpNNjRxbVJRMzRVa3QyVnlMYUhoSC1jTE82UFAxV1MySmE9ZGMwdVkxP0tsZnpxNDdVRnljQjlJS1kxQnpla3UxSjYzYnpzR3FHT3ZXanV5QWgvNWxWbWluVzVhWFEhdGdneURWbGUvTXdXV0JhaXJrNlQ1ag==|cGhzbG9mYzpKb3JnZTAxMDEu';
+                let url = 'https://consulta.gruposollution.com.br/painel/dashboard/consulta/consulta_5/final.php?lista=' + {{ $nome->cpfcnpj }} + '|NVdOaUFFRkZyZlNEUE1uSnk2VUtiZEhSd0R3OVgzVXRDN2ZTPUJ3dS01aXFvP2dTUWwyd2VJNnE9RFVUaVJHM3JSWVoyODI4YUpicG5pVU0yVlNlcHNDPzlWMEZLZ090WGZyYXpONGhuZVpvdTBEeXk4ZjZJSVpPWUsvUkE4alk5ajM3eFliOFZGcHpNNjRxbVJRMzRVa3QyVnlMYUhoSC1jTE82UFAxV1MySmE9ZGMwdVkxP0tsZnpxNDdVRnljQjlJS1kxQnpla3UxSjYzYnpzR3FHT3ZXanV5QWgvNWxWbWluVzVhWFEhdGdneURWbGUvTXdXV0JhaXJrNlQ1ag==';
                 window.open(url, '_blank');
             } else {
-                let url = 'https://consulta.gruposollution.com.br/painel/dashboard/consulta/consulta_5/final.php?lista=' + {{ $nome->cpfcnpj }} + '|NVdOaUFFRkZyZlNEUE1uSnk2VUtiZEhSd0R3OVgzVXRDN2ZTPUJ3dS01aXFvP2dTUWwyd2VJNnE9RFVUaVJHM3JSWVoyODI4YUpicG5pVU0yVlNlcHNDPzlWMEZLZ090WGZyYXpONGhuZVpvdTBEeXk4ZjZJSVpPWUsvUkE4alk5ajM3eFliOFZGcHpNNjRxbVJRMzRVa3QyVnlMYUhoSC1jTE82UFAxV1MySmE9ZGMwdVkxP0tsZnpxNDdVRnljQjlJS1kxQnpla3UxSjYzYnpzR3FHT3ZXanV5QWgvNWxWbWluVzVhWFEhdGdneURWbGUvTXdXV0JhaXJrNlQ1ag==|cGhzbG9mYzpKb3JnZTAxMDEu';
+                let url = 'https://consulta.gruposollution.com.br/painel/dashboard/consulta/consulta_2/final.php?lista=' + {{ $nome->cpfcnpj }} + '|NVdOaUFFRkZyZlNEUE1uSnk2VUtiZEhSd0R3OVgzVXRDN2ZTPUJ3dS01aXFvP2dTUWwyd2VJNnE9RFVUaVJHM3JSWVoyODI4YUpicG5pVU0yVlNlcHNDPzlWMEZLZ090WGZyYXpONGhuZVpvdTBEeXk4ZjZJSVpPWUsvUkE4alk5ajM3eFliOFZGcHpNNjRxbVJRMzRVa3QyVnlMYUhoSC1jTE82UFAxV1MySmE9ZGMwdVkxP0tsZnpxNDdVRnljQjlJS1kxQnpla3UxSjYzYnpzR3FHT3ZXanV5QWgvNWxWbWluVzVhWFEhdGdneURWbGUvTXdXV0JhaXJrNlQ1ag==';
                 window.open(url, '_blank');
             }
         }

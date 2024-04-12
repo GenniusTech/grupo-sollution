@@ -44,7 +44,7 @@
                             </div>
 
                             <div id="resultado" class="col-12 d-none">
-                                <form action="{{ route('cadastraNome') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('cadastra-nome') }}" method="POST" enctype="multipart/form-data">
                                     <input type="hidden" value={{ csrf_token() }} name="_token">
                                     <input type="hidden" name="id_vendedor" value="{{ Auth::user()->id }}">
                                     <input type="hidden" name="valor" value="{{ Auth::user()->valor_limpa_nome }}">

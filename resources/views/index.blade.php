@@ -15,6 +15,11 @@
                                             Acesso Para Parceiros.
                                             <p class="p-min">Bem-vindo(a)!</p>
                                         </h1>
+                                        @if (session('error'))
+                                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                                {{ session('error') }}
+                                            </div>
+                                        @endif
                                     </div>
                                     <form class="user" method="POST" action="{{ route('login_action') }}">
                                         <input type="hidden" value={{ csrf_token() }} name="_token">

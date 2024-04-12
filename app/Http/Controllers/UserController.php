@@ -25,7 +25,7 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             return redirect()->intended('dashboard');
         } else {
-            return redirect()->back()->withErrors(['email' => 'As credenciais fornecidas são inválidas.']);
+            return redirect()->back()->with(['error' => 'As credenciais fornecidas são inválidas.']);
         }
     }
 

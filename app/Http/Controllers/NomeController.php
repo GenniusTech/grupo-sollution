@@ -15,8 +15,8 @@ use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class NomeController extends Controller
-{
+class NomeController extends Controller {
+
     public function vendaDireta($id = null) {
         $listaAberta = Lista::where('status', 1)->first();
         if($listaAberta) {
@@ -27,6 +27,7 @@ class NomeController extends Controller
     }
 
     public function cadastraNome(Request $request) {
+        
         $request->validate([
             'cpfcnpj' => 'required',
             'nome' => 'required|string|max:255',
@@ -40,7 +41,13 @@ class NomeController extends Controller
             return view('dashboard.vendas.venda', ['produto' => $request->produto, 'error' => 'Não foi possível cadastrar esse Associado, tente novamente mais tarde!']);
         }
 
-        return view('dashboard.vendas.documento', ['produto' => $request->produto, 'nome' => $venda, 'success' => 'Agora, envie os documentos necessários!']);
+        return redirect()->route('view-nome', ['id' => $venda->id])->with('success', 'Agora, envie os documentos necessários!');
+    }
+
+    public function viewNome($id) {
+
+        $nome = Nome::find($id);
+        return view('dashboard.vendas.documento', ['nome' => $nome]);
     }
 
     private function prepareVendaData(Request $request, $id) {

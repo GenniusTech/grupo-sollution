@@ -21,7 +21,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [DashboardController::class, 'logout'])->name('logout');
 
     Route::get('/vendaDireta/{id}', [NomeController::class, 'vendaDireta'])->name('vendaDireta');
-    Route::post('cadastraNome', [NomeController::class, 'cadastraNome'])->name('cadastraNome');
+    Route::get('/view-nome/{id}', [NomeController::class, 'viewNome'])->name('view-nome');
+    Route::post('cadastra-nome', [NomeController::class, 'cadastraNome'])->name('cadastra-nome');
     Route::post('cadastraDocumento', [NomeController::class, 'cadastraDocumento'])->name('cadastraDocumento');
     Route::post('excluiNome', [NomeController::class, 'excluiNome'])->name('excluiNome');
 
